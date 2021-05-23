@@ -1,0 +1,22 @@
+{
+	"name": "Xml_final",
+	"properties": {
+		"description": "Arquivo final, já trabalhado",
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_data_lake",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "data_factory_test"
+		},
+		"annotations": [],
+		"type": "Xml",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "saida",
+				"container": "raw"
+			}
+		}
+	}
+}
