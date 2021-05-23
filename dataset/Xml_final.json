@@ -15,7 +15,7 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": {
-					"value": "@concat('source_',formatDateTime(utcnow(), 'yyyyMMdd'),'.xml')",
+					"value": "@concat('saida_',formatDateTime(utcnow(), 'yyyyMMdd'),'.xml')",
 					"type": "Expression"
 				},
 				"folderPath": "saida",
