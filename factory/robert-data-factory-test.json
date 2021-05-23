@@ -1,0 +1,9 @@
+{
+	"name": "robert-data-factory-test",
+	"location": "eastus2",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "3f8b8d88-a27c-413d-b9f2-e084def05ba0",
+		"tenantId": "7e6a351f-ae75-4e30-a1b3-ac23ecc6cf55"
+	}
+}
