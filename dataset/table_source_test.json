@@ -1,0 +1,11 @@
+{
+	"name": "table_source_test",
+	"properties": {
+		"folder": {
+			"name": "robert_datafactory"
+		},
+		"annotations": [],
+		"type": "AzureMySqlTable",
+		"schema": []
+	}
+}
