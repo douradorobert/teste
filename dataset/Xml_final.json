@@ -14,9 +14,14 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@concat('source_',formatDateTime(utcnow(), 'yyyyMMdd'),'.xml')",
+					"type": "Expression"
+				},
 				"folderPath": "saida",
 				"container": "raw"
-			}
+			},
+			"encodingName": "UTF-8"
 		}
 	}
 }
