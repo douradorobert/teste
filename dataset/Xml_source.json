@@ -1,0 +1,20 @@
+{
+	"name": "Xml_source",
+	"properties": {
+		"description": "Arquivo bruto, a ser processado",
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_data_lake",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "data_factory_test"
+		},
+		"annotations": [],
+		"type": "Xml",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation"
+			}
+		}
+	}
+}
