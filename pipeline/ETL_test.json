@@ -14,7 +14,10 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"pythonFile": ""
+				}
 			},
 			{
 				"name": "Python2",
