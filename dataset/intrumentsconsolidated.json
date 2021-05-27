@@ -20,6 +20,211 @@
 		},
 		"schema": [
 			{
+				"name": "RptDt",
+				"type": "String"
+			},
+			{
+				"name": "TckrSymb",
+				"type": "String"
+			},
+			{
+				"name": "Asst",
+				"type": "String"
+			},
+			{
+				"name": "AsstDesc",
+				"type": "String"
+			},
+			{
+				"name": "SgmtNm",
+				"type": "String"
+			},
+			{
+				"name": "MktNm",
+				"type": "String"
+			},
+			{
+				"name": "SctyCtgyNm",
+				"type": "String"
+			},
+			{
+				"name": "XprtnDt",
+				"type": "String"
+			},
+			{
+				"name": "XprtnCd",
+				"type": "String"
+			},
+			{
+				"name": "TradgStartDt",
+				"type": "String"
+			},
+			{
+				"name": "TradgEndDt",
+				"type": "String"
+			},
+			{
+				"name": "BaseCd",
+				"type": "String"
+			},
+			{
+				"name": "ConvsCritNm",
+				"type": "String"
+			},
+			{
+				"name": "MtrtyDtTrgtPt",
+				"type": "String"
+			},
+			{
+				"name": "ReqrdConvsInd",
+				"type": "String"
+			},
+			{
+				"name": "ISIN",
+				"type": "String"
+			},
+			{
+				"name": "CFICd",
+				"type": "String"
+			},
+			{
+				"name": "DlvryNtceStartDt",
+				"type": "String"
+			},
+			{
+				"name": "DlvryNtceEndDt",
+				"type": "String"
+			},
+			{
+				"name": "OptnTp",
+				"type": "String"
+			},
+			{
+				"name": "CtrctMltplr",
+				"type": "String"
+			},
+			{
+				"name": "AsstQtnQty",
+				"type": "String"
+			},
+			{
+				"name": "AllcnRndLot",
+				"type": "String"
+			},
+			{
+				"name": "TradgCcy",
+				"type": "String"
+			},
+			{
+				"name": "DlvryTpNm",
+				"type": "String"
+			},
+			{
+				"name": "WdrwlDays",
+				"type": "String"
+			},
+			{
+				"name": "WrkgDays",
+				"type": "String"
+			},
+			{
+				"name": "ClnrDays",
+				"type": "String"
+			},
+			{
+				"name": "RlvrBasePricNm",
+				"type": "String"
+			},
+			{
+				"name": "OpngFutrPosDay",
+				"type": "String"
+			},
+			{
+				"name": "SdTpCd1",
+				"type": "String"
+			},
+			{
+				"name": "UndrlygTckrSymb1",
+				"type": "String"
+			},
+			{
+				"name": "SdTpCd2",
+				"type": "String"
+			},
+			{
+				"name": "UndrlygTckrSymb2",
+				"type": "String"
+			},
+			{
+				"name": "PureGoldWght",
+				"type": "String"
+			},
+			{
+				"name": "ExrcPric",
+				"type": "String"
+			},
+			{
+				"name": "OptnStyle",
+				"type": "String"
+			},
+			{
+				"name": "ValTpNm",
+				"type": "String"
+			},
+			{
+				"name": "PrmUpfrntInd",
+				"type": "String"
+			},
+			{
+				"name": "OpngPosLmtDt",
+				"type": "String"
+			},
+			{
+				"name": "DstrbtnId",
+				"type": "String"
+			},
+			{
+				"name": "PricFctr",
+				"type": "String"
+			},
+			{
+				"name": "DaysToSttlm",
+				"type": "String"
+			},
+			{
+				"name": "SrsTpNm",
+				"type": "String"
+			},
+			{
+				"name": "PrtcnFlg",
+				"type": "String"
+			},
+			{
+				"name": "AutomtcExrcInd",
+				"type": "String"
+			},
+			{
+				"name": "SpcfctnCd",
+				"type": "String"
+			},
+			{
+				"name": "CrpnNm",
+				"type": "String"
+			},
+			{
+				"name": "CorpActnStartDt",
+				"type": "String"
+			},
+			{
+				"name": "CtdyTrtmntTpNm",
+				"type": "String"
+			},
+			{
+				"name": "MktCptlstn",
+				"type": "String"
+			},
+			{
+				"name": "CorpGovnLvlNm",
 				"type": "String"
 			}
 		]
