@@ -716,6 +716,52 @@
 				"[concat(variables('factoryId'), '/datasets/intrumentsconsolidated')]",
 				"[concat(variables('factoryId'), '/datasets/output_teste')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SeriesBacen')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Data flow1",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "1.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "SeriesBacen",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"cotacoes": {},
+									"dicionario": {},
+									"ColetorSeriesBacen0": {},
+									"ColetorSeriesBacen1": {},
+									"ColetorSeriesBacen2": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/SeriesBacen')]"
+			]
 		}
 	]
 }
