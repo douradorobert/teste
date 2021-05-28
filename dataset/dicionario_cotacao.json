@@ -5,13 +5,16 @@
 			"referenceName": "AzureBlobStorage2",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "SeriesBacen/Inputs"
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": "dicionario_cotacao.csv",
-				"container": "jorge"
+				"container": "seriesbacen"
 			},
 			"columnDelimiter": ";",
 			"escapeChar": "\\",
