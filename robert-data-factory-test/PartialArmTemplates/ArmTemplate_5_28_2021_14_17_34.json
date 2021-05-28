@@ -1,0 +1,688 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "robert-data-factory-test"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/SeriesBacen0')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage2",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "SeriesBacen/Outputs"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "seriesbacen"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "26052021;5;A;AFN;0",
+						"type": "String"
+					},
+					{
+						"name": "06687;0",
+						"type": "String"
+					},
+					{
+						"name": "06807;781",
+						"type": "String"
+					},
+					{
+						"name": "000;795",
+						"type": "String"
+					},
+					{
+						"name": "000",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SeriesBacen1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage2",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "SeriesBacen/Outputs"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "seriesbacen"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SeriesBacen2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage2",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "SeriesBacen/Outputs"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "seriesbacen"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/cotacoes')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage2",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "SeriesBacen/Inputs"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "cotacaoTodasAsMoedas_26052021.csv",
+						"container": "seriesbacen"
+					},
+					"columnDelimiter": ";",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dicionario_cotacao')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage2",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "SeriesBacen/Inputs"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "dicionario_cotacao.csv",
+						"container": "seriesbacen"
+					},
+					"columnDelimiter": ";",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"nullValue": "#N/A",
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "moeda",
+						"type": "String"
+					},
+					{
+						"name": "alias0_sellpricedollar",
+						"type": "String"
+					},
+					{
+						"name": "alias1_sellpricedollar",
+						"type": "String"
+					},
+					{
+						"name": "alias0_sellprice",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/intrumentsconsolidated')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "InstrumentsConsolidatedFile_20210517_1.csv",
+						"container": "jorge"
+					},
+					"columnDelimiter": ";",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "RptDt",
+						"type": "String"
+					},
+					{
+						"name": "TckrSymb",
+						"type": "String"
+					},
+					{
+						"name": "Asst",
+						"type": "String"
+					},
+					{
+						"name": "AsstDesc",
+						"type": "String"
+					},
+					{
+						"name": "SgmtNm",
+						"type": "String"
+					},
+					{
+						"name": "MktNm",
+						"type": "String"
+					},
+					{
+						"name": "SctyCtgyNm",
+						"type": "String"
+					},
+					{
+						"name": "XprtnDt",
+						"type": "String"
+					},
+					{
+						"name": "XprtnCd",
+						"type": "String"
+					},
+					{
+						"name": "TradgStartDt",
+						"type": "String"
+					},
+					{
+						"name": "TradgEndDt",
+						"type": "String"
+					},
+					{
+						"name": "BaseCd",
+						"type": "String"
+					},
+					{
+						"name": "ConvsCritNm",
+						"type": "String"
+					},
+					{
+						"name": "MtrtyDtTrgtPt",
+						"type": "String"
+					},
+					{
+						"name": "ReqrdConvsInd",
+						"type": "String"
+					},
+					{
+						"name": "ISIN",
+						"type": "String"
+					},
+					{
+						"name": "CFICd",
+						"type": "String"
+					},
+					{
+						"name": "DlvryNtceStartDt",
+						"type": "String"
+					},
+					{
+						"name": "DlvryNtceEndDt",
+						"type": "String"
+					},
+					{
+						"name": "OptnTp",
+						"type": "String"
+					},
+					{
+						"name": "CtrctMltplr",
+						"type": "String"
+					},
+					{
+						"name": "AsstQtnQty",
+						"type": "String"
+					},
+					{
+						"name": "AllcnRndLot",
+						"type": "String"
+					},
+					{
+						"name": "TradgCcy",
+						"type": "String"
+					},
+					{
+						"name": "DlvryTpNm",
+						"type": "String"
+					},
+					{
+						"name": "WdrwlDays",
+						"type": "String"
+					},
+					{
+						"name": "WrkgDays",
+						"type": "String"
+					},
+					{
+						"name": "ClnrDays",
+						"type": "String"
+					},
+					{
+						"name": "RlvrBasePricNm",
+						"type": "String"
+					},
+					{
+						"name": "OpngFutrPosDay",
+						"type": "String"
+					},
+					{
+						"name": "SdTpCd1",
+						"type": "String"
+					},
+					{
+						"name": "UndrlygTckrSymb1",
+						"type": "String"
+					},
+					{
+						"name": "SdTpCd2",
+						"type": "String"
+					},
+					{
+						"name": "UndrlygTckrSymb2",
+						"type": "String"
+					},
+					{
+						"name": "PureGoldWght",
+						"type": "String"
+					},
+					{
+						"name": "ExrcPric",
+						"type": "String"
+					},
+					{
+						"name": "OptnStyle",
+						"type": "String"
+					},
+					{
+						"name": "ValTpNm",
+						"type": "String"
+					},
+					{
+						"name": "PrmUpfrntInd",
+						"type": "String"
+					},
+					{
+						"name": "OpngPosLmtDt",
+						"type": "String"
+					},
+					{
+						"name": "DstrbtnId",
+						"type": "String"
+					},
+					{
+						"name": "PricFctr",
+						"type": "String"
+					},
+					{
+						"name": "DaysToSttlm",
+						"type": "String"
+					},
+					{
+						"name": "SrsTpNm",
+						"type": "String"
+					},
+					{
+						"name": "PrtcnFlg",
+						"type": "String"
+					},
+					{
+						"name": "AutomtcExrcInd",
+						"type": "String"
+					},
+					{
+						"name": "SpcfctnCd",
+						"type": "String"
+					},
+					{
+						"name": "CrpnNm",
+						"type": "String"
+					},
+					{
+						"name": "CorpActnStartDt",
+						"type": "String"
+					},
+					{
+						"name": "CtdyTrtmntTpNm",
+						"type": "String"
+					},
+					{
+						"name": "MktCptlstn",
+						"type": "String"
+					},
+					{
+						"name": "CorpGovnLvlNm",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/output_teste')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "jorge"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/templates')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Excel",
+				"typeProperties": {
+					"sheetName": "Sheet1",
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "templates.xlsx",
+						"container": "jorge"
+					}
+				},
+				"schema": [
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SeriesBacen')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "cotacoes",
+								"type": "DatasetReference"
+							},
+							"name": "cotacoes"
+						},
+						{
+							"dataset": {
+								"referenceName": "dicionario_cotacao",
+								"type": "DatasetReference"
+							},
+							"name": "dicionario"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "SeriesBacen0",
+								"type": "DatasetReference"
+							},
+							"name": "ColetorSeriesBacen0"
+						},
+						{
+							"dataset": {
+								"referenceName": "SeriesBacen1",
+								"type": "DatasetReference"
+							},
+							"name": "ColetorSeriesBacen1"
+						},
+						{
+							"dataset": {
+								"referenceName": "SeriesBacen2",
+								"type": "DatasetReference"
+							},
+							"name": "ColetorSeriesBacen2"
+						}
+					],
+					"transformations": [
+						{
+							"name": "DerivedColumn1"
+						},
+						{
+							"name": "join"
+						},
+						{
+							"name": "Selecionar1"
+						},
+						{
+							"name": "SelectSellPrice"
+						},
+						{
+							"name": "SelectSellPriceDollar1"
+						},
+						{
+							"name": "SelectSellPriceDollar0"
+						},
+						{
+							"name": "RemoveNull0"
+						},
+						{
+							"name": "RemoveNull1"
+						},
+						{
+							"name": "RemoveNull2"
+						}
+					],
+					"script": "source(output(\n\t\tdia as string,\n\t\tcodigo as string,\n\t\ttipo as string,\n\t\tmoeda as string,\n\t\tcompra_real as string,\n\t\tvenda_real as string,\n\t\tcompra_dolar as string,\n\t\tvenda_dolar as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> cotacoes\nsource(output(\n\t\tmoeda as string,\n\t\talias0_sellpricedollar as string,\n\t\talias1_sellpricedollar as string,\n\t\talias0_sellprice as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> dicionario\nSelecionar1 derive(alias0_sellpricedollar = iif(!isNull(alias0_sellpricedollar),\r\n    concat(\"<SERIE code=\\\"\", alias0_sellpricedollar,\"\\\" value=\\\"\", sellpricedollar,\"\\\"/>\"),\r\n    alias0_sellpricedollar),\n\t\talias1_sellpricedollar = iif(!isNull(alias1_sellpricedollar),\r\n    concat(\"<SERIE code=\\\"\", alias1_sellpricedollar,\"\\\" value=\\\"\", sellpricedollar,\"\\\"/>\"),\r\n    alias1_sellpricedollar),\n\t\talias0_sellprice = iif(!isNull(alias0_sellprice),\r\n    concat(\"<SERIE code=\\\"\", alias0_sellprice,\"\\\" value=\\\"\", sellprice,\"\\\"/>\"),\r\n    alias0_sellprice)) ~> DerivedColumn1\ncotacoes, dicionario join(cotacoes@moeda == dicionario@moeda,\n\tjoinType:'right',\n\tbroadcast: 'auto')~> join\njoin select(mapColumn(\n\t\tmoeda = cotacoes@moeda,\n\t\tbuyprice = compra_real,\n\t\tsellprice = venda_real,\n\t\tbuypricedollar = compra_dolar,\n\t\tsellpricedollar = venda_dolar,\n\t\tmoeda = dicionario@moeda,\n\t\talias0_sellpricedollar,\n\t\talias1_sellpricedollar,\n\t\talias0_sellprice\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Selecionar1\nDerivedColumn1 select(mapColumn(\n\t\talias0_sellprice\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SelectSellPrice\nDerivedColumn1 select(mapColumn(\n\t\talias1_sellpricedollar\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SelectSellPriceDollar1\nDerivedColumn1 select(mapColumn(\n\t\talias0_sellpricedollar\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SelectSellPriceDollar0\nSelectSellPriceDollar0 filter(!isNull(alias0_sellpricedollar)) ~> RemoveNull0\nSelectSellPriceDollar1 filter(!isNull(alias1_sellpricedollar)) ~> RemoveNull1\nSelectSellPrice filter(!isNull(alias0_sellprice)) ~> RemoveNull2\nRemoveNull0 sink(input(\n\t\t{26052021;5;A;AFN;0} as string,\n\t\t{06687;0} as string,\n\t\t{06807;781} as string,\n\t\t{000;795} as string,\n\t\t{000} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> ColetorSeriesBacen0\nRemoveNull1 sink(input(\n\t\tColumn_1 as string,\n\t\tColumn_2 as string,\n\t\tColumn_3 as string,\n\t\tColumn_4 as string,\n\t\tColumn_5 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> ColetorSeriesBacen1\nRemoveNull2 sink(input(\n\t\tColumn_1 as string,\n\t\tColumn_2 as string,\n\t\tColumn_3 as string,\n\t\tColumn_4 as string,\n\t\tColumn_5 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> ColetorSeriesBacen2"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/cotacoes')]",
+				"[concat(variables('factoryId'), '/datasets/dicionario_cotacao')]",
+				"[concat(variables('factoryId'), '/datasets/SeriesBacen0')]",
+				"[concat(variables('factoryId'), '/datasets/SeriesBacen1')]",
+				"[concat(variables('factoryId'), '/datasets/SeriesBacen2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/instrument_template')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "templates",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						},
+						{
+							"dataset": {
+								"referenceName": "intrumentsconsolidated",
+								"type": "DatasetReference"
+							},
+							"name": "source2"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "output_teste",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "Join1"
+						},
+						{
+							"name": "Select1"
+						},
+						{
+							"name": "Filter1"
+						},
+						{
+							"name": "DerivedColumn1"
+						},
+						{
+							"name": "DerivedColumn2"
+						}
+					],
+					"script": "source(output(\n\t\tColumn_1 as string,\n\t\tColumn_2 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source1\nsource(output(\n\t\tRptDt as string,\n\t\tTckrSymb as string,\n\t\tAsst as string,\n\t\tAsstDesc as string,\n\t\tSgmtNm as string,\n\t\tMktNm as string,\n\t\tSctyCtgyNm as string,\n\t\tXprtnDt as string,\n\t\tXprtnCd as string,\n\t\tTradgStartDt as string,\n\t\tTradgEndDt as string,\n\t\tBaseCd as string,\n\t\tConvsCritNm as string,\n\t\tMtrtyDtTrgtPt as string,\n\t\tReqrdConvsInd as string,\n\t\tISIN as string,\n\t\tCFICd as string,\n\t\tDlvryNtceStartDt as string,\n\t\tDlvryNtceEndDt as string,\n\t\tOptnTp as string,\n\t\tCtrctMltplr as string,\n\t\tAsstQtnQty as string,\n\t\tAllcnRndLot as string,\n\t\tTradgCcy as string,\n\t\tDlvryTpNm as string,\n\t\tWdrwlDays as string,\n\t\tWrkgDays as string,\n\t\tClnrDays as string,\n\t\tRlvrBasePricNm as string,\n\t\tOpngFutrPosDay as string,\n\t\tSdTpCd1 as string,\n\t\tUndrlygTckrSymb1 as string,\n\t\tSdTpCd2 as string,\n\t\tUndrlygTckrSymb2 as string,\n\t\tPureGoldWght as string,\n\t\tExrcPric as string,\n\t\tOptnStyle as string,\n\t\tValTpNm as string,\n\t\tPrmUpfrntInd as string,\n\t\tOpngPosLmtDt as string,\n\t\tDstrbtnId as string,\n\t\tPricFctr as string,\n\t\tDaysToSttlm as string,\n\t\tSrsTpNm as string,\n\t\tPrtcnFlg as string,\n\t\tAutomtcExrcInd as string,\n\t\tSpcfctnCd as string,\n\t\tCrpnNm as string,\n\t\tCorpActnStartDt as string,\n\t\tCtdyTrtmntTpNm as string,\n\t\tMktCptlstn as string,\n\t\tCorpGovnLvlNm as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source2\nsource1, source2 join(Column_1 == Asst,\n\tjoinType:'right',\n\tbroadcast: 'auto')~> Join1\nJoin1 select(mapColumn(\n\t\tColumn_2,\n\t\tTckrSymb,\n\t\tAsst,\n\t\tSgmtNm,\n\t\tMktNm,\n\t\tSctyCtgyNm,\n\t\tXprtnDt,\n\t\tXprtnCd,\n\t\tTradgStartDt,\n\t\tTradgEndDt,\n\t\tISIN\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nSelect1 filter(isNull(SctyCtgyNm) &&\r\ntoString(MktNm) ==\"FUTURE\" && toString(SgmtNm) ==\"FINANCIAL\") ~> Filter1\nFilter1 derive(code = concat(Asst,\"_\",XprtnCd,\"_\",left(XprtnDt,4),right(left(XprtnDt,7),2),right(XprtnDt,2)),\n\t\tname = concat(Asst,\" \",iif(month(toDate(XprtnDt, 'yyyy-MM-dd'))==1, \"JAN\",iif(month(toDate(XprtnDt, 'yyyy-MM-dd'))==2,\"FEV\",iif(month(toDate(XprtnDt, 'yyyy-MM-dd'))==3, \"MAR\", iif(month(toDate(XprtnDt, 'yyyy-MM-dd'))==4, 'ABR', iif(month(toDate(XprtnDt, 'yyyy-MM-dd'))==5, 'MAY', iif(month(toDate(XprtnDt, 'yyyy-MM-dd'))==6, \"JUN\",iif(month(toDate(XprtnDt, 'yyyy-MM-dd'))==7,\"JUL\",iif(month(toDate(XprtnDt, 'yyyy-MM-dd'))==8, \"AGO\", iif(month(toDate(XprtnDt, 'yyyy-MM-dd'))==9, 'SET', iif(month(toDate(XprtnDt, 'yyyy-MM-dd'))==10, 'OUT',  iif(month(toDate(XprtnDt, 'yyyy-MM-dd'))==11, 'NOV', 'DEZ' ))))))))))),right(left(XprtnDt,4),2),\" \",XprtnDt)) ~> DerivedColumn1\nDerivedColumn1 derive(Column_2 = replace(replace(replace(replace(Column_2,\r\n             \"$code\", code),\r\n             \"$name\", name),\r\n               \"$isin\", ISIN),\r\n               \"$maturity\", XprtnDt)) ~> DerivedColumn2\nDerivedColumn2 sink(input(\n\t\tColumn_1 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/templates')]",
+				"[concat(variables('factoryId'), '/datasets/intrumentsconsolidated')]",
+				"[concat(variables('factoryId'), '/datasets/output_teste')]"
+			]
+		}
+	]
+}
