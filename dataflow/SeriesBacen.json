@@ -16,19 +16,22 @@
 						"referenceName": "dicionario_cotacao",
 						"type": "DatasetReference"
 					},
-					"name": "source1"
+					"name": "dicionario"
 				}
 			],
 			"sinks": [],
 			"transformations": [
 				{
-					"name": "Select1"
+					"name": "DerivedColumn1"
 				},
 				{
-					"name": "DerivedColumn1"
+					"name": "join"
+				},
+				{
+					"name": "Selecionar1"
 				}
 			],
-			"script": "source(output(\n\t\tdia as string,\n\t\tcodigo as string,\n\t\ttipo as string,\n\t\tmoeda as string,\n\t\tcompra_real as string,\n\t\tvenda_real as string,\n\t\tcompra_dolar as string,\n\t\tvenda_dolar as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> cotacoes\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tvalidationMode: 'none',\n\tnamespaces: true) ~> source1\ncotacoes select(mapColumn(\n\t\tmoeda,\n\t\tcompra_real,\n\t\tvenda_real,\n\t\tcompra_dolar,\n\t\tvenda_dolar\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nSelect1 derive(xml = replace(replace(\"<SERIE code= \\\"SERBRAOTC_USD_$moeda\\\" value = \\\"$venda_dolar\\\"/>\",\r\n            \"$moeda\", moeda),\r\n            \"$venda_dolar\", venda_dolar)) ~> DerivedColumn1"
+			"script": "source(output(\n\t\tdia as string,\n\t\tcodigo as string,\n\t\ttipo as string,\n\t\tmoeda as string,\n\t\tcompra_real as string,\n\t\tvenda_real as string,\n\t\tcompra_dolar as string,\n\t\tvenda_dolar as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> cotacoes\nsource(output(\n\t\tmoeda as string,\n\t\talias0_sellpricedollar as string,\n\t\talias1_sellpricedollar as string,\n\t\talias0_sellprice as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> dicionario\nSelecionar1 derive(alias0_sellpricedollar = ERROR_FUNCTION('')) ~> DerivedColumn1\ncotacoes, dicionario join(Selecionar1@moeda == dicionario@moeda,\n\tjoinType:'right',\n\tbroadcast: 'auto')~> join\njoin select(mapColumn(\n\t\tmoeda = cotacoes@moeda,\n\t\tcompra_real,\n\t\tvenda_real,\n\t\tcompra_dolar,\n\t\tvenda_dolar,\n\t\tmoeda = dicionario@moeda,\n\t\talias0_sellpricedollar,\n\t\talias1_sellpricedollar,\n\t\talias0_sellprice\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Selecionar1"
 		}
 	}
 }

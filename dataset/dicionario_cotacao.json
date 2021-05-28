@@ -1,0 +1,40 @@
+{
+	"name": "dicionario_cotacao",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage2",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "dicionario_cotacao.csv",
+				"container": "jorge"
+			},
+			"columnDelimiter": ";",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "moeda",
+				"type": "String"
+			},
+			{
+				"name": "alias0_sellpricedollar",
+				"type": "String"
+			},
+			{
+				"name": "alias1_sellpricedollar",
+				"type": "String"
+			},
+			{
+				"name": "alias0_sellprice",
+				"type": "String"
+			}
+		]
+	}
+}
