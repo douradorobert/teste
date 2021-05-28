@@ -1,0 +1,46 @@
+{
+	"name": "SeriesBacen0",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage2",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "SeriesBacen/Outputs"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "seriesbacen"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "26052021;5;A;AFN;0",
+				"type": "String"
+			},
+			{
+				"name": "06687;0",
+				"type": "String"
+			},
+			{
+				"name": "06807;781",
+				"type": "String"
+			},
+			{
+				"name": "000;795",
+				"type": "String"
+			},
+			{
+				"name": "000",
+				"type": "String"
+			}
+		]
+	}
+}
