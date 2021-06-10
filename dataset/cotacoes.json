@@ -13,11 +13,14 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "cotacaoTodasAsMoedas_26052021.csv",
-				"container": "seriesbacen"
+				"fileName": "cotacaoTodasAsMoedas26052021.csv",
+				"folderPath": "inputs",
+				"container": "series-bacen"
 			},
 			"columnDelimiter": ";",
 			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"nullValue": "#N/A",
 			"quoteChar": "\""
 		},
 		"schema": [
