@@ -15,7 +15,7 @@
 				"type": "AzureBlobStorageLocation",
 				"fileName": "dicionario_cotacao.csv",
 				"folderPath": "inputs",
-				"container": "seriesbacen"
+				"container": "series-bacen"
 			},
 			"columnDelimiter": ";",
 			"escapeChar": "\\",
