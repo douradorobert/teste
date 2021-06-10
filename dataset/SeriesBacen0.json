@@ -2,7 +2,7 @@
 	"name": "SeriesBacen0",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureBlobStorage2",
+			"referenceName": "series_bacen",
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
@@ -13,9 +13,11 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"container": "seriesbacen"
+				"fileName": "SeriesBacen0",
+				"folderPath": "outputs",
+				"container": "series-bacen"
 			},
-			"columnDelimiter": ",",
+			"columnDelimiter": ";",
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
