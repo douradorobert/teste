@@ -13,9 +13,11 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"container": "seriesbacen"
+				"fileName": "SeriesBacen2",
+				"folderPath": "outputs",
+				"container": "series-bacen"
 			},
-			"columnDelimiter": ",",
+			"columnDelimiter": ";",
 			"escapeChar": "\\",
 			"quoteChar": "\""
 		},
