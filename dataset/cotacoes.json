@@ -19,7 +19,7 @@
 			},
 			"columnDelimiter": ";",
 			"escapeChar": "\\",
-			"firstRowAsHeader": true,
+			"firstRowAsHeader": false,
 			"nullValue": "#N/A",
 			"quoteChar": "\""
 		},
