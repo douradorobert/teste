@@ -1,0 +1,9 @@
+{
+	"name": "ADF-teste-md",
+	"location": "northcentralus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "e2b691c3-686f-4f7f-a865-c993cbd3c38a",
+		"tenantId": "e0793d39-0939-496d-b129-198edd916feb"
+	}
+}
