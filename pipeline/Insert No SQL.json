@@ -1,0 +1,69 @@
+{
+	"name": "Insert No SQL",
+	"properties": {
+		"description": "tentativa de insert no SQL via AzureFunction",
+		"activities": [
+			{
+				"name": "Azure Function1",
+				"type": "AzureFunctionActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"functionName": "InsertSQL_test",
+					"method": "POST",
+					"body": {
+						"name": "Robert"
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "teste SQL",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "teste procedure",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Azure Function1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[spAPIAtualizaCotacaoSerie]",
+					"storedProcedureParameters": {
+						"aa": {
+							"value": {
+								"value": "@activity('Azure Function1').output.Response",
+								"type": "Expression"
+							},
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "rcPhoenixSAD410_ADF_Teste",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"annotations": []
+	}
+}
