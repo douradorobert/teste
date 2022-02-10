@@ -6,7 +6,14 @@
 			{
 				"name": "Azure Function1",
 				"type": "AzureFunctionActivity",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Wait1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -28,8 +35,8 @@
 				}
 			},
 			{
-				"name": "teste procedure",
-				"type": "SqlServerStoredProcedure",
+				"name": "If Condition1",
+				"type": "IfCondition",
 				"dependsOn": [
 					{
 						"activity": "Azure Function1",
@@ -38,29 +45,28 @@
 						]
 					}
 				],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[spAPIAtualizaCotacaoSerie]",
-					"storedProcedureParameters": {
-						"aa": {
-							"value": {
-								"value": "@activity('Azure Function1').output.Response",
-								"type": "Expression"
-							},
-							"type": "String"
-						}
+					"expression": {
+						"value": "@equals(activity('Azure Function1').output, 'true')",
+						"type": "Expression"
 					}
-				},
-				"linkedServiceName": {
-					"referenceName": "rcPhoenixSAD410_ADF_Teste",
-					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Wait1",
+				"type": "Wait",
+				"dependsOn": [
+					{
+						"activity": "If Condition1",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 10800
 				}
 			}
 		],
