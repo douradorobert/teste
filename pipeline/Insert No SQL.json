@@ -4,11 +4,12 @@
 		"description": "tentativa de insert no SQL via AzureFunction",
 		"activities": [
 			{
-				"name": "Azure Function1",
+				"name": "Manipula indice",
+				"description": "Compara a informação recebida com a data atual.\nFaz o scrapper do indice e avalia a necessidade de inserção dentro do banco.",
 				"type": "AzureFunctionActivity",
 				"dependsOn": [
 					{
-						"activity": "Wait1",
+						"activity": "Get Indice Banco",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -25,6 +26,16 @@
 				"typeProperties": {
 					"functionName": "InsertSQL_test",
 					"method": "POST",
+					"headers": {
+						"Valor": {
+							"value": "@activity('Get Indice Banco').output.value",
+							"type": "Expression"
+						},
+						"Data": {
+							"value": "@activity('Get Indice Banco').output.date",
+							"type": "Expression"
+						}
+					},
 					"body": {
 						"name": "Robert"
 					}
@@ -35,30 +46,11 @@
 				}
 			},
 			{
-				"name": "If Condition1",
-				"type": "IfCondition",
-				"dependsOn": [
-					{
-						"activity": "Azure Function1",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"expression": {
-						"value": "@equals(activity('Azure Function1').output, 'true')",
-						"type": "Expression"
-					}
-				}
-			},
-			{
 				"name": "Wait1",
 				"type": "Wait",
 				"dependsOn": [
 					{
-						"activity": "If Condition1",
+						"activity": "Manipula indice",
 						"dependencyConditions": [
 							"Failed"
 						]
@@ -68,6 +60,66 @@
 				"typeProperties": {
 					"waitTimeInSeconds": 10800
 				}
+			},
+			{
+				"name": "Get Indice Banco",
+				"description": "Obtem o valor e data da última entrada do índice dentro do banco.",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Wait1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "rcPhoenixSAD410_ADF_Teste",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Insert Indice SQL",
+				"description": "Faz o insert do novo índice ",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Retorno da funcao",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": []
+			},
+			{
+				"name": "Retorno da funcao",
+				"description": "Encerra o pipeline ou insere o indice no banco.",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "Manipula indice",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": []
 			}
 		],
 		"annotations": []
