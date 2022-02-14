@@ -1,0 +1,12 @@
+{
+	"name": "rcPhoenixSAD410_ADF_Teste",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "rcPhoenixSAD410_ADF_Teste",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	}
+}
