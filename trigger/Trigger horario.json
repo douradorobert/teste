@@ -1,0 +1,32 @@
+{
+	"name": "Trigger horario",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "Insert No SQL",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2022-02-14T13:23:00",
+				"timeZone": "Bahia Standard Time",
+				"schedule": {
+					"minutes": [
+						45
+					],
+					"hours": [
+						8
+					]
+				}
+			}
+		}
+	}
+}
