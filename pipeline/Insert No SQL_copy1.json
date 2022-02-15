@@ -4,7 +4,7 @@
 		"description": "tentativa de insert no SQL via AzureFunction",
 		"activities": [
 			{
-				"name": "get indice",
+				"name": "getIndice",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -44,7 +44,7 @@
 				"type": "AzureFunctionActivity",
 				"dependsOn": [
 					{
-						"activity": "get indice",
+						"activity": "getIndice",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -62,7 +62,8 @@
 					"functionName": "InsertSQL-northcentral",
 					"method": "POST",
 					"body": {
-						"name": "@string(activity('get indice').output.firstRow.Valor)"
+						"value": "{\"name\":\"@string(activity('getIndice').output.firstRow.Valor)\"}",
+						"type": "Expression"
 					}
 				},
 				"linkedServiceName": {
