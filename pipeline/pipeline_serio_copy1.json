@@ -1,0 +1,193 @@
+{
+	"name": "pipeline_serio_copy1",
+	"properties": {
+		"activities": [
+			{
+				"name": "GetCotacaoAtualizada",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[db_datareader].[getUltimaCotacaoSerie]",
+						"storedProcedureParameters": {
+							"IDSerie": {
+								"type": "String",
+								"value": {
+									"value": "@variables('IDSerie_indice')",
+									"type": "Expression"
+								}
+							}
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "rcPhoenixSAD410_ADF_Teste",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "ScrapperCalendario",
+				"type": "AzureFunctionActivity",
+				"dependsOn": [
+					{
+						"activity": "GetCotacaoAtualizada",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"functionName": "ScrapperCalendarioDivulgacao",
+					"method": "POST",
+					"body": {
+						"value": "{\"mes_referencia\":\"@{string(split(activity('GetCotacaoAtualizada').output.firstRow.Data,'-')[1])}\",\"indice\":\"@{variables('indice')}\"}",
+						"type": "Expression"
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ScrapperCalendarioIBRE",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "AtualizaBancodeDados",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "ScrapperCalendario",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@equals(activity('ScrapperCalendario').output.inserir_no_banco,true)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "AtualizaCalendarioBanco",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "AtualizaBancodeDados",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": []
+			},
+			{
+				"name": "ScrapperINCC",
+				"type": "AzureFunctionActivity",
+				"dependsOn": [
+					{
+						"activity": "AtualizaBancodeDados",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": []
+			},
+			{
+				"name": "IndiceAtualizou",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "ScrapperINCC",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": []
+			},
+			{
+				"name": "InsereIndiceBanco",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "IndiceAtualizou",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": []
+			},
+			{
+				"name": "Fail1",
+				"type": "Fail",
+				"dependsOn": [
+					{
+						"activity": "ScrapperCalendario",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"message": "nada",
+					"errorCode": "nao sei"
+				}
+			}
+		],
+		"variables": {
+			"indice": {
+				"type": "String",
+				"defaultValue": "INCCM"
+			},
+			"IDSerie_indice": {
+				"type": "String",
+				"defaultValue": "580040"
+			}
+		},
+		"annotations": []
+	}
+}
