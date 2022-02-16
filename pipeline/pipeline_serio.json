@@ -210,7 +210,8 @@
 					{
 						"activity": "AtualizaCalendarioBanco",
 						"dependencyConditions": [
-							"Completed"
+							"Completed",
+							"Succeeded"
 						]
 					}
 				],
