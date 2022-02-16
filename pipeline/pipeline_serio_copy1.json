@@ -58,6 +58,12 @@
 				"typeProperties": {
 					"functionName": "ScrapperCalendarioDivulgacao",
 					"method": "POST",
+					"headers": {
+						"teste": {
+							"value": "@formatDateTime(utcnow(), 'yyyy-MM-dd')",
+							"type": "Expression"
+						}
+					},
 					"body": {
 						"value": "{\"mes_referencia\":\"@{string(split(activity('GetCotacaoAtualizada').output.firstRow.Data,'-')[1])}\",\"indice\":\"@{variables('indice')}\"}",
 						"type": "Expression"
@@ -175,6 +181,19 @@
 				"typeProperties": {
 					"message": "nada",
 					"errorCode": "nao sei"
+				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "indice",
+					"value": {
+						"value": "@string(int(replace('2022-05-20','-','')))",
+						"type": "Expression"
+					}
 				}
 			}
 		],
