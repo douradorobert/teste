@@ -109,7 +109,10 @@
 					"storedProcedureName": "[db_datareader].[testeInsereDataDivulgacaoIbre]",
 					"storedProcedureParameters": {
 						"Data": {
-							"value": "@formatDateTime(utcnow(), 'yyyy-MM-dd')",
+							"value": {
+								"value": "@formatDateTime(utcnow(), 'yyyy-MM-dd')",
+								"type": "Expression"
+							},
 							"type": "String"
 						},
 						"DataDivulgacao": {
@@ -178,23 +181,6 @@
 						"value": "@not(equals(activity('ScrapperINCC').output.valor, activity('GetCotacaoAtualizada').output.fisrtRow.Valor))",
 						"type": "Expression"
 					}
-				}
-			},
-			{
-				"name": "sendemail",
-				"type": "Fail",
-				"dependsOn": [
-					{
-						"activity": "ScrapperCalendario",
-						"dependencyConditions": [
-							"Failed"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"message": "nada",
-					"errorCode": "nao sei"
 				}
 			},
 			{
@@ -288,7 +274,10 @@
 					"storedProcedureName": "[db_datareader].[InsereCotacaoSerieHistorica]",
 					"storedProcedureParameters": {
 						"Data": {
-							"value": "@formatDateTime(utcnow(), 'yyyy-MM-dd')",
+							"value": {
+								"value": "@formatDateTime(utcnow(), 'yyyy-MM-dd')",
+								"type": "Expression"
+							},
 							"type": "String"
 						},
 						"IDSerie": {
@@ -299,7 +288,10 @@
 							"type": "Int32"
 						},
 						"Valor": {
-							"value": "@activity('GetDivulgacaoAtualizada').output.firstRow.Valor",
+							"value": {
+								"value": "@activity('GetDivulgacaoAtualizada').output.firstRow.Valor",
+								"type": "Expression"
+							},
 							"type": "Double"
 						}
 					}
@@ -332,7 +324,10 @@
 					"storedProcedureName": "[db_datareader].[InsereCotacaoSerieHistorica]",
 					"storedProcedureParameters": {
 						"Data": {
-							"value": "@formatDateTime(utcnow(), 'yyyy-MM-dd')",
+							"value": {
+								"value": "@formatDateTime(utcnow(), 'yyyy-MM-dd')",
+								"type": "Expression"
+							},
 							"type": "String"
 						},
 						"IDSerie": {
