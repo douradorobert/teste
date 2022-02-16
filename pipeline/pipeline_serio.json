@@ -5,7 +5,14 @@
 			{
 				"name": "GetCotacaoAtualizada",
 				"type": "Lookup",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "GetDivulgacaoAtualizada",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -39,14 +46,7 @@
 			{
 				"name": "ScrapperCalendario",
 				"type": "AzureFunctionActivity",
-				"dependsOn": [
-					{
-						"activity": "GetCotacaoAtualizada",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -57,11 +57,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"functionName": "ScrapperCalendarioDivulgacao",
-					"method": "POST",
-					"body": {
-						"value": "{\"mes_referencia\":\"@{string(split(activity('GetCotacaoAtualizada').output.firstRow.Data,'-')[1])}\",\"indice\":\"@{variables('indice')}\"}",
-						"type": "Expression"
-					}
+					"method": "POST"
 				},
 				"linkedServiceName": {
 					"referenceName": "ScrapperCalendarioIBRE",
@@ -105,16 +101,43 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[db_datareader].[testeInsereDataDivulgacaoIbre]",
+					"storedProcedureParameters": {
+						"Data": {
+							"value": "@formatDateTime(utcnow(), 'yyyy-MM-dd')",
+							"type": "String"
+						},
+						"DataDivulgacao": {
+							"value": {
+								"value": "@activity('ScrapperCalendario').output.dia",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"Indice": {
+							"value": {
+								"value": "@variables('indice')",
+								"type": "Expression"
+							},
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "rcPhoenixSAD410_ADF_Teste",
+					"type": "LinkedServiceReference"
+				}
 			},
 			{
 				"name": "ScrapperINCC",
 				"type": "AzureFunctionActivity",
 				"dependsOn": [
 					{
-						"activity": "AtualizaBancodeDados",
+						"activity": "CotacaoBancoAtualizada",
 						"dependencyConditions": [
-							"Completed"
+							"Succeeded"
 						]
 					}
 				],
@@ -125,7 +148,15 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"functionName": "ScrapperInccmIBRE",
+					"method": "GET"
+				},
+				"linkedServiceName": {
+					"referenceName": "ScrapperInccmIBRE",
+					"type": "LinkedServiceReference"
+				}
 			},
 			{
 				"name": "IndiceAtualizou",
@@ -138,7 +169,141 @@
 						]
 					}
 				],
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@not(equals(activity('ScrapperINCC').output.valor, activity('GetCotacaoAtualizada').output.fisrtRow.Valor))",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "sendemail",
+				"type": "Fail",
+				"dependsOn": [
+					{
+						"activity": "ScrapperCalendario",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"message": "nada",
+					"errorCode": "nao sei"
+				}
+			},
+			{
+				"name": "GetDivulgacaoAtualizada",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "AtualizaBancodeDados",
+						"dependencyConditions": [
+							"Failed"
+						]
+					},
+					{
+						"activity": "AtualizaCalendarioBanco",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[db_datareader].[testeGetCalendarioDivulgacaoIbreAtualizado]",
+						"storedProcedureParameters": {
+							"Indice": {
+								"type": "String",
+								"value": {
+									"value": "@variables('indice')",
+									"type": "Expression"
+								}
+							}
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "rcPhoenixSAD410_ADF_Teste",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "CotacaoBancoAtualizada",
+				"description": "Verifica se a última cotação salva foi divulgada após a data da última divulgação.",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "GetCotacaoAtualizada",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@less(int(replace(activity('GetCotacaoAtualizada').output.firstRow.Data,'-','')),\nint(replace(activity('GetDivulgacaoAtualizada').output.firstRow.DataDivulgacao,'-','')))",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "InsereIndiceBanco1",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "CotacaoBancoAtualizada",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[db_datareader].[InsereCotacaoSerieHistorica]",
+					"storedProcedureParameters": {
+						"Data": {
+							"value": "@formatDateTime(utcnow(), 'yyyy-MM-dd')",
+							"type": "String"
+						},
+						"IDSerie": {
+							"value": {
+								"value": "@variables('IDSerie_indice')",
+								"type": "Expression"
+							},
+							"type": "Int32"
+						},
+						"Valor": {
+							"value": "@activity('GetDivulgacaoAtualizada').output.firstRow.Valor",
+							"type": "Double"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "rcPhoenixSAD410_ADF_Teste",
+					"type": "LinkedServiceReference"
+				}
 			},
 			{
 				"name": "InsereIndiceBanco",
@@ -158,23 +323,33 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
-			},
-			{
-				"name": "Fail1",
-				"type": "Fail",
-				"dependsOn": [
-					{
-						"activity": "ScrapperCalendario",
-						"dependencyConditions": [
-							"Failed"
-						]
-					}
-				],
 				"userProperties": [],
 				"typeProperties": {
-					"message": "nada",
-					"errorCode": "nao sei"
+					"storedProcedureName": "[db_datareader].[InsereCotacaoSerieHistorica]",
+					"storedProcedureParameters": {
+						"Data": {
+							"value": "@formatDateTime(utcnow(), 'yyyy-MM-dd')",
+							"type": "String"
+						},
+						"IDSerie": {
+							"value": {
+								"value": "@variables('IDSerie_indice')",
+								"type": "Expression"
+							},
+							"type": "Int32"
+						},
+						"Valor": {
+							"value": {
+								"value": "@activity('ScrapperINCC').output.valor",
+								"type": "Expression"
+							},
+							"type": "Double"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "rcPhoenixSAD410_ADF_Teste",
+					"type": "LinkedServiceReference"
 				}
 			}
 		],
