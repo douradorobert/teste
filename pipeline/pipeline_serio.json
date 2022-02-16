@@ -57,7 +57,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"functionName": "ScrapperCalendarioDivulgacao",
-					"method": "POST"
+					"method": "POST",
+					"body": {
+						"indice": "@{variables('indice')}"
+					}
 				},
 				"linkedServiceName": {
 					"referenceName": "ScrapperCalendarioIBRE",
@@ -207,7 +210,7 @@
 					{
 						"activity": "AtualizaCalendarioBanco",
 						"dependencyConditions": [
-							"Succeeded"
+							"Completed"
 						]
 					}
 				],
