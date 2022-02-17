@@ -1,5 +1,5 @@
 {
-	"name": "pipeline_serio",
+	"name": "AtualizaINCCM",
 	"properties": {
 		"activities": [
 			{
@@ -83,104 +83,49 @@
 					"expression": {
 						"value": "@equals(activity('ScrapperCalendario').output.inserir_no_banco,true)",
 						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "AtualizaCalendarioBanco",
-				"type": "SqlServerStoredProcedure",
-				"dependsOn": [
-					{
-						"activity": "AtualizaBancodeDados",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"storedProcedureName": "[db_datareader].[testeInsereDataDivulgacaoIbre]",
-					"storedProcedureParameters": {
-						"Data": {
-							"value": {
-								"value": "@formatDateTime(utcnow(), 'yyyy-MM-dd')",
-								"type": "Expression"
+					},
+					"ifTrueActivities": [
+						{
+							"name": "AtualizaCalendarioBanco",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
 							},
-							"type": "String"
-						},
-						"DataDivulgacao": {
-							"value": {
-								"value": "@activity('ScrapperCalendario').output.dia",
-								"type": "Expression"
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[db_datareader].[testeInsereDataDivulgacaoIbre]",
+								"storedProcedureParameters": {
+									"Data": {
+										"value": "@formatDateTime(utcnow(), 'yyyy-MM-dd')",
+										"type": "String"
+									},
+									"DataDivulgacao": {
+										"value": {
+											"value": "@activity('ScrapperCalendario').output.dia",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"Indice": {
+										"value": {
+											"value": "@variables('indice')",
+											"type": "Expression"
+										},
+										"type": "String"
+									}
+								}
 							},
-							"type": "String"
-						},
-						"Indice": {
-							"value": {
-								"value": "@variables('indice')",
-								"type": "Expression"
-							},
-							"type": "String"
+							"linkedServiceName": {
+								"referenceName": "rcPhoenixSAD410_ADF_Teste",
+								"type": "LinkedServiceReference"
+							}
 						}
-					}
-				},
-				"linkedServiceName": {
-					"referenceName": "rcPhoenixSAD410_ADF_Teste",
-					"type": "LinkedServiceReference"
-				}
-			},
-			{
-				"name": "ScrapperINCC",
-				"type": "AzureFunctionActivity",
-				"dependsOn": [
-					{
-						"activity": "CotacaoBancoAtualizada",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"functionName": "ScrapperInccmIBRE",
-					"method": "GET"
-				},
-				"linkedServiceName": {
-					"referenceName": "ScrapperInccmIBRE",
-					"type": "LinkedServiceReference"
-				}
-			},
-			{
-				"name": "IndiceAtualizou",
-				"type": "IfCondition",
-				"dependsOn": [
-					{
-						"activity": "ScrapperINCC",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"expression": {
-						"value": "@not(equals(activity('ScrapperINCC').output.valor, activity('GetCotacaoAtualizada').output.fisrtRow.Valor))",
-						"type": "Expression"
-					}
+					]
 				}
 			},
 			{
@@ -190,13 +135,6 @@
 					{
 						"activity": "AtualizaBancodeDados",
 						"dependencyConditions": [
-							"Failed"
-						]
-					},
-					{
-						"activity": "AtualizaCalendarioBanco",
-						"dependencyConditions": [
-							"Completed",
 							"Succeeded"
 						]
 					}
@@ -212,7 +150,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderStoredProcedureName": "[db_datareader].[testeGetCalendarioDivulgacaoIbreAtualizado]",
+						"sqlReaderStoredProcedureName": "[db_datareader].[GetCalendarioDivulgacaoIbreAtualizado]",
 						"storedProcedureParameters": {
 							"Indice": {
 								"type": "String",
@@ -246,109 +184,195 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@less(int(replace(activity('GetCotacaoAtualizada').output.firstRow.Data,'-','')),\nint(replace(activity('GetDivulgacaoAtualizada').output.firstRow.DataDivulgacao,'-','')))",
+						"value": "@greater(int(substring(replace(activity('GetDivulgacaoAtualizada').output.firstRow.DataDivulgacao,'-',''),0,8)),\nint(substring(replace(activity('GetCotacaoAtualizada').output.firstRow.Data,'-',''),0,8)))",
 						"type": "Expression"
-					}
+					},
+					"ifFalseActivities": [
+						{
+							"name": "InsereIndiceBanco1",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[db_datareader].[InsereCotacaoSerieHistorica]",
+								"storedProcedureParameters": {
+									"Data": {
+										"value": "@formatDateTime(utcnow(), 'yyyy-MM-dd')",
+										"type": "String"
+									},
+									"IDSerie": {
+										"value": {
+											"value": "@variables('IDSerie_indice')",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									},
+									"Valor": {
+										"value": {
+											"value": "@activity('GetCotacaoAtualizada').output.firstRow.Valor",
+											"type": "Expression"
+										},
+										"type": "Double"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "rcPhoenixSAD410_ADF_Teste",
+								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "EncerraPipeline",
+							"description": "Não é um erro, apenas encerra o pipeline",
+							"type": "Fail",
+							"dependsOn": [
+								{
+									"activity": "InsereIndiceBanco1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"message": "FailMessage",
+								"errorCode": "ErrorCode"
+							}
+						}
+					]
 				}
 			},
 			{
-				"name": "InsereIndiceBanco1",
-				"type": "SqlServerStoredProcedure",
+				"name": "TentativasObtencaoIndiceNovo",
+				"type": "ForEach",
 				"dependsOn": [
 					{
 						"activity": "CotacaoBancoAtualizada",
-						"dependencyConditions": [
-							"Failed"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"storedProcedureName": "[db_datareader].[InsereCotacaoSerieHistorica]",
-					"storedProcedureParameters": {
-						"Data": {
-							"value": {
-								"value": "@formatDateTime(utcnow(), 'yyyy-MM-dd')",
-								"type": "Expression"
-							},
-							"type": "String"
-						},
-						"IDSerie": {
-							"value": {
-								"value": "@variables('IDSerie_indice')",
-								"type": "Expression"
-							},
-							"type": "Int32"
-						},
-						"Valor": {
-							"value": {
-								"value": "@activity('GetDivulgacaoAtualizada').output.firstRow.Valor",
-								"type": "Expression"
-							},
-							"type": "Double"
-						}
-					}
-				},
-				"linkedServiceName": {
-					"referenceName": "rcPhoenixSAD410_ADF_Teste",
-					"type": "LinkedServiceReference"
-				}
-			},
-			{
-				"name": "InsereIndiceBanco",
-				"type": "SqlServerStoredProcedure",
-				"dependsOn": [
-					{
-						"activity": "IndiceAtualizou",
 						"dependencyConditions": [
 							"Succeeded"
 						]
 					}
 				],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[db_datareader].[InsereCotacaoSerieHistorica]",
-					"storedProcedureParameters": {
-						"Data": {
-							"value": {
-								"value": "@formatDateTime(utcnow(), 'yyyy-MM-dd')",
-								"type": "Expression"
+					"items": {
+						"value": "@variables('indice')",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "ScrapperInccmIBRE1",
+							"type": "AzureFunctionActivity",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
 							},
-							"type": "String"
+							"userProperties": [],
+							"typeProperties": {
+								"functionName": "ScrapperInccmIBRE",
+								"method": "GET"
+							},
+							"linkedServiceName": {
+								"referenceName": "ScrapperInccmIBRE",
+								"type": "LinkedServiceReference"
+							}
 						},
-						"IDSerie": {
-							"value": {
-								"value": "@variables('IDSerie_indice')",
-								"type": "Expression"
-							},
-							"type": "Int32"
-						},
-						"Valor": {
-							"value": {
-								"value": "@activity('ScrapperINCC').output.valor",
-								"type": "Expression"
-							},
-							"type": "Double"
+						{
+							"name": "IndiceAtualizou1",
+							"type": "IfCondition",
+							"dependsOn": [
+								{
+									"activity": "ScrapperInccmIBRE1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"expression": {
+									"value": "@not(equals(activity('ScrapperINCC').output.valor, activity('GetCotacaoAtualizada').output.firstRow.Valor))",
+									"type": "Expression"
+								},
+								"ifFalseActivities": [
+									{
+										"name": "Peraiii",
+										"type": "Wait",
+										"dependsOn": [],
+										"userProperties": [],
+										"typeProperties": {
+											"waitTimeInSeconds": 5
+										}
+									}
+								],
+								"ifTrueActivities": [
+									{
+										"name": "InsereIndiceBanco",
+										"type": "SqlServerStoredProcedure",
+										"dependsOn": [],
+										"policy": {
+											"timeout": "7.00:00:00",
+											"retry": 0,
+											"retryIntervalInSeconds": 30,
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"storedProcedureName": "[db_datareader].[InsereCotacaoSerieHistorica]",
+											"storedProcedureParameters": {
+												"Data": {
+													"value": "@formatDateTime(utcnow(), 'yyyy-MM-dd')",
+													"type": "String"
+												},
+												"IDSerie": {
+													"value": "@variables('IDSerie_indice')",
+													"type": "Int32"
+												},
+												"Valor": {
+													"value": "@activity('ScrapperINCC').output.valor",
+													"type": "Double"
+												}
+											}
+										},
+										"linkedServiceName": {
+											"referenceName": "rcPhoenixSAD410_ADF_Teste",
+											"type": "LinkedServiceReference"
+										}
+									},
+									{
+										"name": "EncerrarPipeline",
+										"type": "Fail",
+										"dependsOn": [
+											{
+												"activity": "InsereIndiceBanco",
+												"dependencyConditions": [
+													"Succeeded"
+												]
+											}
+										],
+										"userProperties": [],
+										"typeProperties": {
+											"message": "FailMessage",
+											"errorCode": "ErrorCode"
+										}
+									}
+								]
+							}
 						}
-					}
-				},
-				"linkedServiceName": {
-					"referenceName": "rcPhoenixSAD410_ADF_Teste",
-					"type": "LinkedServiceReference"
+					]
 				}
 			}
 		],
