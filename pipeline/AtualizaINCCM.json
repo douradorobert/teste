@@ -269,7 +269,7 @@
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "ScrapperInccmIBRE1",
+							"name": "ScrapperInccmIBRE",
 							"type": "AzureFunctionActivity",
 							"dependsOn": [],
 							"policy": {
@@ -294,7 +294,7 @@
 							"type": "IfCondition",
 							"dependsOn": [
 								{
-									"activity": "ScrapperInccmIBRE1",
+									"activity": "ScrapperInccmIBRE",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -303,7 +303,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"expression": {
-									"value": "@not(equals(activity('ScrapperINCC').output.valor, activity('GetCotacaoAtualizada').output.firstRow.Valor))",
+									"value": "@not(equals(activity('ScrapperInccmIBRE').output.valor, activity('GetCotacaoAtualizada').output.firstRow.Valor))",
 									"type": "Expression"
 								},
 								"ifFalseActivities": [
