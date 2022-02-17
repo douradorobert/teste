@@ -290,7 +290,7 @@
 							}
 						},
 						{
-							"name": "IndiceAtualizou1",
+							"name": "IndiceAtualizou",
 							"type": "IfCondition",
 							"dependsOn": [
 								{
@@ -342,7 +342,7 @@
 													"type": "Int32"
 												},
 												"Valor": {
-													"value": "@activity('ScrapperINCC').output.valor",
+													"value": "@activity('ScrapperInccmIBRE').output.valor",
 													"type": "Double"
 												}
 											}
