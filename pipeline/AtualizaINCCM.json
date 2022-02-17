@@ -263,7 +263,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@variables('indice')",
+						"value": "@array('1,2,3')",
 						"type": "Expression"
 					},
 					"isSequential": true,
@@ -303,7 +303,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"expression": {
-									"value": "@not(equals(activity('ScrapperInccmIBRE').output.valor, activity('GetCotacaoAtualizada').output.firstRow.Valor))",
+									"value": "@not(equals(float(activity('ScrapperInccmIBRE').output.valor),\r\n float(activity('GetCotacaoAtualizada').output.firstRow.Valor)))",
 									"type": "Expression"
 								},
 								"ifFalseActivities": [
