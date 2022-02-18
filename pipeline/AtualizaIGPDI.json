@@ -307,7 +307,7 @@
 				"type": "IfCondition",
 				"dependsOn": [
 					{
-						"activity": "GetDivulgacaoAtualizada",
+						"activity": "MesDivulgacaoAtual",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -328,6 +328,37 @@
 							"typeProperties": {
 								"message": "Não é necessário fazer mais nada",
 								"errorCode": "Não é necessário fazer mais nada"
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "MesDivulgacaoAtual",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "GetDivulgacaoAtualizada",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@equals(formatDateTime(utcnow(), 'MM'),\nsubstring(activity('GetDivulgacaoAtualizada').output.DataDivulgacao,5,2))",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "Fail1",
+							"type": "Fail",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"message": "Data de divulgação não corresponde ao atual",
+								"errorCode": "Disparar email"
 							}
 						}
 					]
