@@ -347,7 +347,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@equals(formatDateTime(utcnow(), 'MM'),\nsubstring(activity('GetDivulgacaoAtualizada').output.DataDivulgacao,5,2))",
+						"value": "@equals(formatDateTime(utcnow(), 'MM'),\nsubstring(activity('GetDivulgacaoAtualizada').output.firstRow.DataDivulgacao,5,2))",
 						"type": "Expression"
 					},
 					"ifFalseActivities": [

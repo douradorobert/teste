@@ -1,12 +1,18 @@
 {
-	"name": "Trigger horario",
+	"name": "TriggerDiario8h",
 	"properties": {
 		"annotations": [],
-		"runtimeState": "Stopped",
+		"runtimeState": "Started",
 		"pipelines": [
 			{
 				"pipelineReference": {
 					"referenceName": "Insert No SQL",
+					"type": "PipelineReference"
+				}
+			},
+			{
+				"pipelineReference": {
+					"referenceName": "AtualizaIGPDI",
 					"type": "PipelineReference"
 				}
 			}
@@ -20,7 +26,7 @@
 				"timeZone": "Bahia Standard Time",
 				"schedule": {
 					"minutes": [
-						45
+						0
 					],
 					"hours": [
 						8
