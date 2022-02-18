@@ -9,6 +9,12 @@
 					"referenceName": "AtualizaIGPDI",
 					"type": "PipelineReference"
 				}
+			},
+			{
+				"pipelineReference": {
+					"referenceName": "AtualizaIGPM",
+					"type": "PipelineReference"
+				}
 			}
 		],
 		"type": "ScheduleTrigger",
