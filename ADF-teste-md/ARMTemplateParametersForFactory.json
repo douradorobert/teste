@@ -1,0 +1,33 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "ADF-teste-md"
+		},
+		"ScrapperCalendarioIBRE_functionKey": {
+			"value": ""
+		},
+		"ScrapperIgpmIBRE_functionKey": {
+			"value": ""
+		},
+		"ScrapperInccmIBRE_functionKey": {
+			"value": ""
+		},
+		"procedure_connectionString": {
+			"value": ""
+		},
+		"rcPhoenixSAD410_ADF_Teste_connectionString": {
+			"value": ""
+		},
+		"ScrapperCalendarioIBRE_properties_typeProperties_functionAppUrl": {
+			"value": "https://scrapperfgvibre.azurewebsites.net"
+		},
+		"ScrapperIgpmIBRE_properties_typeProperties_functionAppUrl": {
+			"value": "https://scrapperfgvibre.azurewebsites.net"
+		},
+		"ScrapperInccmIBRE_properties_typeProperties_functionAppUrl": {
+			"value": "https://scrapperfgvibre.azurewebsites.net"
+		}
+	}
+}

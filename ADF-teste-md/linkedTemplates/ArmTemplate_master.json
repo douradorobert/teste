@@ -1,0 +1,98 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "ADF-teste-md"
+		},
+		"ScrapperCalendarioIBRE_functionKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'functionKey' of 'ScrapperCalendarioIBRE'"
+		},
+		"ScrapperIgpmIBRE_functionKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'functionKey' of 'ScrapperIgpmIBRE'"
+		},
+		"ScrapperInccmIBRE_functionKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'functionKey' of 'ScrapperInccmIBRE'"
+		},
+		"procedure_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'procedure'"
+		},
+		"rcPhoenixSAD410_ADF_Teste_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'rcPhoenixSAD410_ADF_Teste'"
+		},
+		"ScrapperCalendarioIBRE_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://scrapperfgvibre.azurewebsites.net"
+		},
+		"ScrapperIgpmIBRE_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://scrapperfgvibre.azurewebsites.net"
+		},
+		"ScrapperInccmIBRE_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://scrapperfgvibre.azurewebsites.net"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "ADF-teste-md_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"ScrapperCalendarioIBRE_functionKey": {
+						"value": "[parameters('ScrapperCalendarioIBRE_functionKey')]"
+					},
+					"ScrapperIgpmIBRE_functionKey": {
+						"value": "[parameters('ScrapperIgpmIBRE_functionKey')]"
+					},
+					"ScrapperInccmIBRE_functionKey": {
+						"value": "[parameters('ScrapperInccmIBRE_functionKey')]"
+					},
+					"procedure_connectionString": {
+						"value": "[parameters('procedure_connectionString')]"
+					},
+					"rcPhoenixSAD410_ADF_Teste_connectionString": {
+						"value": "[parameters('rcPhoenixSAD410_ADF_Teste_connectionString')]"
+					},
+					"ScrapperCalendarioIBRE_properties_typeProperties_functionAppUrl": {
+						"value": "[parameters('ScrapperCalendarioIBRE_properties_typeProperties_functionAppUrl')]"
+					},
+					"ScrapperIgpmIBRE_properties_typeProperties_functionAppUrl": {
+						"value": "[parameters('ScrapperIgpmIBRE_properties_typeProperties_functionAppUrl')]"
+					},
+					"ScrapperInccmIBRE_properties_typeProperties_functionAppUrl": {
+						"value": "[parameters('ScrapperInccmIBRE_properties_typeProperties_functionAppUrl')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
