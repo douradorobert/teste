@@ -263,7 +263,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@array('1,2,3')",
+						"value": "@variables('Tentativas')",
 						"type": "Expression"
 					},
 					"isSequential": true,
@@ -384,6 +384,14 @@
 			"IDSerie_indice": {
 				"type": "String",
 				"defaultValue": "580040"
+			},
+			"Tentativas": {
+				"type": "Array",
+				"defaultValue": [
+					1,
+					2,
+					3
+				]
 			}
 		},
 		"annotations": []

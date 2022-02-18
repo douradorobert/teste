@@ -15,6 +15,12 @@
 					"referenceName": "AtualizaIGPM",
 					"type": "PipelineReference"
 				}
+			},
+			{
+				"pipelineReference": {
+					"referenceName": "AtualizaINCCM",
+					"type": "PipelineReference"
+				}
 			}
 		],
 		"type": "ScheduleTrigger",
