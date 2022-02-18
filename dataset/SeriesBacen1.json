@@ -1,10 +1,6 @@
 {
 	"name": "SeriesBacen1",
 	"properties": {
-		"linkedServiceName": {
-			"referenceName": "series_bacen",
-			"type": "LinkedServiceReference"
-		},
 		"folder": {
 			"name": "SeriesBacen/Outputs"
 		},

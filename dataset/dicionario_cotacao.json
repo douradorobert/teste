@@ -1,10 +1,6 @@
 {
 	"name": "dicionario_cotacao",
 	"properties": {
-		"linkedServiceName": {
-			"referenceName": "series_bacen",
-			"type": "LinkedServiceReference"
-		},
 		"folder": {
 			"name": "SeriesBacen/Inputs"
 		},

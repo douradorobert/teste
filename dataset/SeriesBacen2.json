@@ -1,10 +1,6 @@
 {
 	"name": "SeriesBacen2",
 	"properties": {
-		"linkedServiceName": {
-			"referenceName": "AzureBlobStorage2",
-			"type": "LinkedServiceReference"
-		},
 		"folder": {
 			"name": "SeriesBacen/Outputs"
 		},
