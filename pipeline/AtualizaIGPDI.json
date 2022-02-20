@@ -101,7 +101,10 @@
 								"storedProcedureName": "[db_datareader].[testeInsereDataDivulgacaoIbre]",
 								"storedProcedureParameters": {
 									"Data": {
-										"value": "@formatDateTime(utcnow(), 'yyyy-MM-dd')",
+										"value": {
+											"value": "@formatDateTime(utcnow(), 'yyyy-MM-dd')",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"DataDivulgacao": {
@@ -257,11 +260,17 @@
 											"storedProcedureName": "[db_datareader].[InsereCotacaoSerieHistorica]",
 											"storedProcedureParameters": {
 												"Data": {
-													"value": "@formatDateTime(utcnow(), 'yyyy-MM-dd')",
+													"value": {
+														"value": "@formatDateTime(utcnow(), 'yyyy-MM-dd')",
+														"type": "Expression"
+													},
 													"type": "String"
 												},
 												"IDSerie": {
-													"value": "@variables('IDSerie_indice')",
+													"value": {
+														"value": "@variables('IDSerie_indice')",
+														"type": "Expression"
+													},
 													"type": "Int32"
 												},
 												"Valor": {
@@ -335,6 +344,7 @@
 			},
 			{
 				"name": "MesDivulgacaoAtual",
+				"description": "Verifica se o mês atual possui data de divulgação para o índice em questão.",
 				"type": "IfCondition",
 				"dependsOn": [
 					{

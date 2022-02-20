@@ -7,7 +7,7 @@
 				"type": "Lookup",
 				"dependsOn": [
 					{
-						"activity": "GetDivulgacaoAtualizada",
+						"activity": "DiadeDivulgacao",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -173,12 +173,12 @@
 				}
 			},
 			{
-				"name": "CotacaoBancoAtualizada",
+				"name": "DiadeDivulgacao",
 				"description": "Verifica se a última cotação salva foi divulgada após a data da última divulgação.",
 				"type": "IfCondition",
 				"dependsOn": [
 					{
-						"activity": "GetCotacaoAtualizada",
+						"activity": "GetDivulgacaoAtualizada",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -187,7 +187,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@greater(int(substring(replace(activity('GetDivulgacaoAtualizada').output.firstRow.DataDivulgacao,'-',''),0,8)),\nint(substring(replace(activity('GetCotacaoAtualizada').output.firstRow.Data,'-',''),0,8)))",
+						"value": "@equals(activity('GetDivulgacaoAtualizada').output.firstRow.DataDivulgacao,\nformatDateTime(utcnow(), 'yyyy-MM-dd'))",
 						"type": "Expression"
 					},
 					"ifFalseActivities": [
@@ -260,7 +260,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "CotacaoBancoAtualizada",
+						"activity": "GetCotacaoAtualizada",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -388,6 +388,22 @@
 							}
 						}
 					]
+				}
+			},
+			{
+				"name": "AlgoDeuErrado",
+				"type": "Fail",
+				"dependsOn": [
+					{
+						"activity": "TentativasObtencaoIndiceNovo",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"message": "Não foi possível buscar o índice"
 				}
 			}
 		],
