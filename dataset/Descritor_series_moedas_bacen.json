@@ -1,52 +1,42 @@
 {
-	"name": "MoedasBacen",
+	"name": "Descritor_series_moedas_bacen",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "MoedasBacen",
 			"type": "LinkedServiceReference"
-		},
-		"parameters": {
-			"a": {
-				"type": "string",
-				"defaultValue": "a"
-			}
 		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "20220218.csv",
+				"fileName": "Series_moedas_bacen.csv",
 				"container": "testebacen"
 			},
 			"columnDelimiter": ";",
 			"escapeChar": "\\",
-			"firstRowAsHeader": false,
+			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
 		"schema": [
 			{
+				"name": "moeda",
 				"type": "String"
 			},
 			{
+				"name": "code",
 				"type": "String"
 			},
 			{
+				"name": "field",
 				"type": "String"
 			},
 			{
+				"name": "InverteValor",
 				"type": "String"
 			},
 			{
-				"type": "String"
-			},
-			{
-				"type": "String"
-			},
-			{
-				"type": "String"
-			},
-			{
+				"name": "IDSerie",
 				"type": "String"
 			}
 		]
