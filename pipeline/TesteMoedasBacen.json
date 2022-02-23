@@ -71,14 +71,14 @@
 					{
 						"activity": "geraSeries",
 						"dependencyConditions": [
-							"Failed"
+							"Succeeded"
 						]
 					}
 				],
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@createArray(substring(string(activity('geraSeries').output),1,sub(length(activity('geraSeries').output),1)))",
+						"value": "@createArray(activity('geraSeries').output.valores)",
 						"type": "Expression"
 					},
 					"isSequential": true,
@@ -91,7 +91,7 @@
 							"typeProperties": {
 								"variableName": "AA",
 								"value": {
-									"value": "@json(item())",
+									"value": "item()",
 									"type": "Expression"
 								}
 							}
@@ -113,26 +113,6 @@
 				"userProperties": [],
 				"typeProperties": {
 					"waitTimeInSeconds": 1
-				}
-			},
-			{
-				"name": "Append variable2",
-				"type": "AppendVariable",
-				"dependsOn": [
-					{
-						"activity": "geraSeries",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "AA",
-					"value": {
-						"value": "@substring(string(activity('geraSeries').output.valores),1,sub(length(activity('geraSeries').output.valores),2))",
-						"type": "Expression"
-					}
 				}
 			}
 		],
