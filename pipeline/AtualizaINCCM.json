@@ -7,7 +7,7 @@
 				"type": "Lookup",
 				"dependsOn": [
 					{
-						"activity": "DiadeDivulgacao",
+						"activity": "GetDivulgacaoAtualizada",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -178,7 +178,7 @@
 				"type": "IfCondition",
 				"dependsOn": [
 					{
-						"activity": "GetDivulgacaoAtualizada",
+						"activity": "GetCotacaoAtualizada",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -208,7 +208,7 @@
 								"storedProcedureParameters": {
 									"Data": {
 										"value": {
-											"value": "@formatDateTime(utcnow(), 'yyyy-MM-dd')",
+											"value": "@subtractFromTime(formatDateTime(utcnow(), 'yyyy-MM-dd'),1,'Day')",
 											"type": "Expression"
 										},
 										"type": "String"
@@ -260,7 +260,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "GetCotacaoAtualizada",
+						"activity": "DiadeDivulgacao",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -388,22 +388,6 @@
 							}
 						}
 					]
-				}
-			},
-			{
-				"name": "AlgoDeuErrado",
-				"type": "Fail",
-				"dependsOn": [
-					{
-						"activity": "TentativasObtencaoIndiceNovo",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"message": "Não foi possível buscar o índice"
 				}
 			}
 		],
