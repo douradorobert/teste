@@ -28,7 +28,10 @@
 					},
 					"dataset": {
 						"referenceName": "MoedasBacen",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"a": "a"
+						}
 					},
 					"firstRowOnly": false
 				}
@@ -106,11 +109,17 @@
 										"type": "String"
 									},
 									"IDSerie": {
-										"value": "@json(item()).IDSerie",
+										"value": {
+											"value": "@json(item()).IDSerie",
+											"type": "Expression"
+										},
 										"type": "Int32"
 									},
 									"Valor": {
-										"value": "@json(item()).Value",
+										"value": {
+											"value": "@json(item()).Value",
+											"type": "Expression"
+										},
 										"type": "Double"
 									}
 								}
