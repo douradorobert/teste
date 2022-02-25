@@ -178,7 +178,7 @@
 				"type": "IfCondition",
 				"dependsOn": [
 					{
-						"activity": "GetCotacaoAtualizada",
+						"activity": "MesDivulgacaoAtual",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -256,8 +256,8 @@
 				}
 			},
 			{
-				"name": "TentativasObtencaoIndiceNovo",
-				"type": "ForEach",
+				"name": "Until1",
+				"type": "Until",
 				"dependsOn": [
 					{
 						"activity": "DiadeDivulgacao",
@@ -268,11 +268,10 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"items": {
-						"value": "@variables('Tentativas')",
+					"expression": {
+						"value": "@variables('NovoIndice')",
 						"type": "Expression"
 					},
-					"isSequential": true,
 					"activities": [
 						{
 							"name": "ScrapperInccmIBRE",
@@ -309,23 +308,23 @@
 							"userProperties": [],
 							"typeProperties": {
 								"expression": {
-									"value": "@not(equals(float(activity('ScrapperInccmIBRE').output.valor),\r\n float(activity('GetCotacaoAtualizada').output.firstRow.Valor)))",
+									"value": "@not(equals(float(activity('ScrapperInccmIBRE').output.valor),\n float(activity('GetCotacaoAtualizada').output.firstRow.Valor)))",
 									"type": "Expression"
 								},
 								"ifFalseActivities": [
 									{
-										"name": "Peraiii",
+										"name": "Wait1",
 										"type": "Wait",
 										"dependsOn": [],
 										"userProperties": [],
 										"typeProperties": {
-											"waitTimeInSeconds": 5
+											"waitTimeInSeconds": 10
 										}
 									}
 								],
 								"ifTrueActivities": [
 									{
-										"name": "InsereIndiceBanco",
+										"name": "Stored procedure1",
 										"type": "SqlServerStoredProcedure",
 										"dependsOn": [],
 										"policy": {
@@ -340,10 +339,7 @@
 											"storedProcedureName": "[db_datareader].[InsereCotacaoSerieHistorica]",
 											"storedProcedureParameters": {
 												"Data": {
-													"value": {
-														"value": "@formatDateTime(utcnow(), 'yyyy-MM-dd')",
-														"type": "Expression"
-													},
+													"value": "@formatDateTime(utcnow(), 'yyyy-MM-dd')",
 													"type": "String"
 												},
 												"IDSerie": {
@@ -354,10 +350,7 @@
 													"type": "Int32"
 												},
 												"Valor": {
-													"value": {
-														"value": "@activity('ScrapperInccmIBRE').output.valor",
-														"type": "Expression"
-													},
+													"value": "@activity('ScrapperInccmIBRE').output.valor",
 													"type": "Double"
 												}
 											}
@@ -368,11 +361,11 @@
 										}
 									},
 									{
-										"name": "EncerrarPipeline",
-										"type": "Fail",
+										"name": "Set variable1",
+										"type": "SetVariable",
 										"dependsOn": [
 											{
-												"activity": "InsereIndiceBanco",
+												"activity": "Stored procedure1",
 												"dependencyConditions": [
 													"Succeeded"
 												]
@@ -380,22 +373,40 @@
 										],
 										"userProperties": [],
 										"typeProperties": {
-											"message": "FailMessage",
-											"errorCode": "ErrorCode"
+											"variableName": "NovoIndice",
+											"value": true
 										}
 									}
 								]
 							}
 						}
-					]
+					],
+					"timeout": "0.00:10:00"
 				}
 			},
 			{
-				"name": "Until1",
-				"type": "Until",
+				"name": "SendEmail",
+				"type": "Wait",
 				"dependsOn": [
 					{
-						"activity": "DiadeDivulgacao",
+						"activity": "Until1",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 1
+				}
+			},
+			{
+				"name": "MesDivulgacaoAtual",
+				"description": "Verifica se o mês atual possui data de divulgação para o índice em questão.",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "GetCotacaoAtualizada",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -403,7 +414,22 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"timeout": "7.00:00:00"
+					"expression": {
+						"value": "@equals(formatDateTime(utcnow(), 'MM'),\nsubstring(activity('GetDivulgacaoAtualizada').output.firstRow.DataDivulgacao,5,2))",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "SendEmail1",
+							"type": "Fail",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"message": "Data de divulgação não corresponde ao atual",
+								"errorCode": "Disparar email"
+							}
+						}
+					]
 				}
 			}
 		],
@@ -416,9 +442,9 @@
 				"type": "String",
 				"defaultValue": "580040"
 			},
-			"Tentativas": {
-				"type": "String",
-				"defaultValue": "3"
+			"NovoIndice": {
+				"type": "Boolean",
+				"defaultValue": false
 			}
 		},
 		"annotations": []
