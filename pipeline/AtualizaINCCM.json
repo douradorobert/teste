@@ -69,6 +69,7 @@
 			},
 			{
 				"name": "AtualizaBancodeDados",
+				"description": "Atualiza a table do calendário de divulgação do índice no banco, se possível.",
 				"type": "IfCondition",
 				"dependsOn": [
 					{
@@ -256,7 +257,7 @@
 				}
 			},
 			{
-				"name": "Until1",
+				"name": "CapturaNovoValor",
 				"type": "Until",
 				"dependsOn": [
 					{
@@ -389,7 +390,7 @@
 				"type": "Wait",
 				"dependsOn": [
 					{
-						"activity": "Until1",
+						"activity": "CapturaNovoValor",
 						"dependencyConditions": [
 							"Failed"
 						]
