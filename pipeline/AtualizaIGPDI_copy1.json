@@ -240,7 +240,7 @@
 				}
 			},
 			{
-				"name": "Until1",
+				"name": "CapturaIndice",
 				"type": "Until",
 				"dependsOn": [
 					{
@@ -382,7 +382,7 @@
 				"type": "Wait",
 				"dependsOn": [
 					{
-						"activity": "Until1",
+						"activity": "CapturaIndice",
 						"dependencyConditions": [
 							"Failed"
 						]
