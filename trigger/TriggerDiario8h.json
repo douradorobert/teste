@@ -9,6 +9,12 @@
 					"referenceName": "AtualizaINCCM",
 					"type": "PipelineReference"
 				}
+			},
+			{
+				"pipelineReference": {
+					"referenceName": "AtualizaIGPDI",
+					"type": "PipelineReference"
+				}
 			}
 		],
 		"type": "ScheduleTrigger",
