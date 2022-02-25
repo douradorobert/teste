@@ -7,6 +7,10 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "ADF-teste-md"
 		},
+		"MoedasBacen_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'MoedasBacen'"
+		},
 		"ScrapperCalendarioIBRE_functionKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'functionKey' of 'ScrapperCalendarioIBRE'"
@@ -18,6 +22,10 @@
 		"ScrapperInccmIBRE_functionKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'functionKey' of 'ScrapperInccmIBRE'"
+		},
+		"geraSeriesMoedasBacen_functionKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'functionKey' of 'geraSeriesMoedasBacen'"
 		},
 		"procedure_connectionString": {
 			"type": "secureString",
@@ -38,6 +46,10 @@
 		"ScrapperInccmIBRE_properties_typeProperties_functionAppUrl": {
 			"type": "string",
 			"defaultValue": "https://scrapperfgvibre.azurewebsites.net"
+		},
+		"geraSeriesMoedasBacen_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://seriesmoedasbacen.azurewebsites.net"
 		},
 		"containerUri": {
 			"type": "string",
@@ -66,6 +78,9 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"MoedasBacen_connectionString": {
+						"value": "[parameters('MoedasBacen_connectionString')]"
+					},
 					"ScrapperCalendarioIBRE_functionKey": {
 						"value": "[parameters('ScrapperCalendarioIBRE_functionKey')]"
 					},
@@ -74,6 +89,9 @@
 					},
 					"ScrapperInccmIBRE_functionKey": {
 						"value": "[parameters('ScrapperInccmIBRE_functionKey')]"
+					},
+					"geraSeriesMoedasBacen_functionKey": {
+						"value": "[parameters('geraSeriesMoedasBacen_functionKey')]"
 					},
 					"procedure_connectionString": {
 						"value": "[parameters('procedure_connectionString')]"
@@ -89,6 +107,9 @@
 					},
 					"ScrapperInccmIBRE_properties_typeProperties_functionAppUrl": {
 						"value": "[parameters('ScrapperInccmIBRE_properties_typeProperties_functionAppUrl')]"
+					},
+					"geraSeriesMoedasBacen_properties_typeProperties_functionAppUrl": {
+						"value": "[parameters('geraSeriesMoedasBacen_properties_typeProperties_functionAppUrl')]"
 					}
 				}
 			},

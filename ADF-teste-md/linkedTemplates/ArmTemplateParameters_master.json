@@ -5,6 +5,9 @@
 		"factoryName": {
 			"value": "ADF-teste-md"
 		},
+		"MoedasBacen_connectionString": {
+			"value": ""
+		},
 		"ScrapperCalendarioIBRE_functionKey": {
 			"value": ""
 		},
@@ -12,6 +15,9 @@
 			"value": ""
 		},
 		"ScrapperInccmIBRE_functionKey": {
+			"value": ""
+		},
+		"geraSeriesMoedasBacen_functionKey": {
 			"value": ""
 		},
 		"procedure_connectionString": {
@@ -28,6 +34,9 @@
 		},
 		"ScrapperInccmIBRE_properties_typeProperties_functionAppUrl": {
 			"value": "https://scrapperfgvibre.azurewebsites.net"
+		},
+		"geraSeriesMoedasBacen_properties_typeProperties_functionAppUrl": {
+			"value": "https://seriesmoedasbacen.azurewebsites.net"
 		},
 		"containerUri": {
 			"value": ""
