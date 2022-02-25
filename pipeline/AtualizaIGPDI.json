@@ -240,7 +240,7 @@
 				}
 			},
 			{
-				"name": "CapturaIndice",
+				"name": "CapturaNovoValor",
 				"type": "Until",
 				"dependsOn": [
 					{
@@ -382,7 +382,7 @@
 				"type": "Wait",
 				"dependsOn": [
 					{
-						"activity": "CapturaIndice",
+						"activity": "CapturaNovoValor",
 						"dependencyConditions": [
 							"Failed"
 						]
