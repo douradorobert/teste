@@ -1,5 +1,5 @@
 {
-	"name": "AtualizaIGPM_copy1",
+	"name": "AtualizaIGPM",
 	"properties": {
 		"activities": [
 			{
@@ -240,7 +240,7 @@
 				}
 			},
 			{
-				"name": "Until1",
+				"name": "CapturaNovoValor",
 				"type": "Until",
 				"dependsOn": [
 					{
@@ -382,7 +382,7 @@
 				"type": "Wait",
 				"dependsOn": [
 					{
-						"activity": "Until1",
+						"activity": "CapturaNovoValor",
 						"dependencyConditions": [
 							"Failed"
 						]
