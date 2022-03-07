@@ -66,38 +66,6 @@
 					"referenceName": "geraSeriesMoedasBacen",
 					"type": "LinkedServiceReference"
 				}
-			},
-			{
-				"name": "ExportadorSeriesXML",
-				"type": "AzureFunctionActivity",
-				"dependsOn": [
-					{
-						"activity": "geraSeriesBacen",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"functionName": "ExportadorSeriesXML",
-					"method": "POST",
-					"body": {
-						"value": "{\"container_name\":\"@{variables('container_name')}\",\"today\":\"@{formatDateTime(utcnow(), 'yyyy-MM-dd')}\",\"valores\":\"]{@{activity('geraSeriesBacen').output}\"}\n",
-						"type": "Expression"
-					}
-				},
-				"linkedServiceName": {
-					"referenceName": "ExportadorSeriesXML",
-					"type": "LinkedServiceReference"
-				}
 			}
 		],
 		"variables": {
