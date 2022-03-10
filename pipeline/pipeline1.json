@@ -1,0 +1,45 @@
+{
+	"name": "pipeline1",
+	"properties": {
+		"activities": [
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@variables('listaa')",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Fail1",
+							"type": "Fail",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"message": {
+									"value": "json(@{item()})",
+									"type": "Expression"
+								},
+								"errorCode": "dsadasf"
+							}
+						}
+					]
+				}
+			}
+		],
+		"variables": {
+			"listaa": {
+				"type": "Array",
+				"defaultValue": [
+					"{'teste':'a','b':teste'}",
+					"{'teste1':'a1','b1':teste1'}"
+				]
+			}
+		},
+		"annotations": []
+	}
+}
