@@ -1,0 +1,18 @@
+{
+	"name": "DebAnbima",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "DebAnbima",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "debêntures Anbima teste.txt",
+				"container": "anbima"
+			}
+		}
+	}
+}
