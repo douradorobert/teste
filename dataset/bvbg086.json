@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "BVBG.086.01_BV000328202203140328000001936319307.zip",
+				"fileName": "CupomLimpo20220314.xml",
 				"container": "bvbg086"
 			},
 			"compression": {
