@@ -1,0 +1,66 @@
+{
+	"name": "pipeline1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Azure Function1",
+				"type": "AzureFunctionActivity",
+				"dependsOn": [
+					{
+						"activity": "Set variable2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"functionName": "GeradorSwaps",
+					"method": "POST",
+					"body": {
+						"value": "{\"curva\":\"@{variables('curva')}\",\"dia\":\"@{variables('dia')}\"}",
+						"type": "Expression"
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "curvasSwap",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Set variable2",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "dia",
+					"value": {
+						"value": "@if(lessOrEquals(int(formatDateTime(utcnow(), 'hh')),6),formatDateTime(adddays(utcnow(),-1),'yyyy-MM-dd'),formatDateTime(utcnow(), 'yyyy-MM-dd'))",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"curva": {
+				"type": "String",
+				"defaultValue": "CRVBRABMF_RATE_SWAP_DI1_DOL"
+			},
+			"dia": {
+				"type": "String",
+				"defaultValue": "2022-03-11"
+			}
+		},
+		"folder": {
+			"name": "B3-Web/CurvasSwap"
+		},
+		"annotations": []
+	}
+}
