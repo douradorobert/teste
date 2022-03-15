@@ -1,0 +1,22 @@
+{
+	"name": "bvbg086",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Bvbgs",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Xml",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "BVBG.086.01_BV000328202201210328000002042077920.xml",
+				"container": "bvbg086"
+			},
+			"compression": {
+				"type": "ZipDeflate",
+				"level": "Optimal"
+			}
+		}
+	}
+}
