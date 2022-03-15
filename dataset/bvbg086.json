@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "BVBG.086.01_BV000328202201210328000002042077920.xml",
+				"fileName": "BVBG.086.01_BV000328202203140328000001936319307.zip",
 				"container": "bvbg086"
 			},
 			"compression": {
