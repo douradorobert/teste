@@ -714,7 +714,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Stopped",
+				"runtimeState": "Started",
 				"pipelines": [
 					{
 						"pipelineReference": {
@@ -728,7 +728,7 @@
 				"typeProperties": {
 					"blobPathBeginsWith": "/bacen/blobs/Curvas/moedasBacen/v1/",
 					"blobPathEndsWith": "_Curvas_moedasBacen_v1.xml",
-					"ignoreEmptyBlobs": true,
+					"ignoreEmptyBlobs": false,
 					"scope": "[parameters('blobtrigger_properties_typeProperties_scope')]",
 					"events": [
 						"Microsoft.Storage.BlobCreated",
