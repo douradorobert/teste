@@ -25,22 +25,6 @@
 								},
 								"errorCode": "dasda"
 							}
-						},
-						{
-							"name": "send msg",
-							"type": "Wait",
-							"dependsOn": [
-								{
-									"activity": "azurefunction",
-									"dependencyConditions": [
-										"Failed"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"waitTimeInSeconds": 1
-							}
 						}
 					]
 				}
