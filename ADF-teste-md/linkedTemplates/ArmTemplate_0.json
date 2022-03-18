@@ -7,6 +7,14 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "ADF-teste-md"
 		},
+		"DebAnbima_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'DebAnbima'"
+		},
+		"ExportadorSeriesXML_functionKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'functionKey' of 'ExportadorSeriesXML'"
+		},
 		"MoedasBacen_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'MoedasBacen'"
@@ -23,17 +31,25 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'functionKey' of 'ScrapperInccmIBRE'"
 		},
+		"curvasSwap_functionKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'functionKey' of 'curvasSwap'"
+		},
 		"geraSeriesMoedasBacen_functionKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'functionKey' of 'geraSeriesMoedasBacen'"
 		},
-		"procedure_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'procedure'"
-		},
 		"rcPhoenixSAD410_ADF_Teste_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'rcPhoenixSAD410_ADF_Teste'"
+		},
+		"Bvbgs_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Bvbgs'"
+		},
+		"ExportadorSeriesXML_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://exportadorxml.azurewebsites.net"
 		},
 		"ScrapperCalendarioIBRE_properties_typeProperties_functionAppUrl": {
 			"type": "string",
@@ -47,137 +63,23 @@
 			"type": "string",
 			"defaultValue": "https://scrapperfgvibre.azurewebsites.net"
 		},
+		"curvasSwap_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://curvasb3-web.azurewebsites.net"
+		},
 		"geraSeriesMoedasBacen_properties_typeProperties_functionAppUrl": {
 			"type": "string",
 			"defaultValue": "https://seriesmoedasbacen.azurewebsites.net"
+		},
+		"blobtrigger_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/b9e0da61-71e8-4197-bd02-960f99d61822/resourceGroups/GrupoRecursosADFTeste/providers/Microsoft.Storage/storageAccounts/datalakebobby"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
-		{
-			"name": "[concat(parameters('factoryName'), '/MoedasBacen')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"connectionString": "[parameters('MoedasBacen_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ScrapperCalendarioIBRE')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureFunction",
-				"typeProperties": {
-					"functionAppUrl": "[parameters('ScrapperCalendarioIBRE_properties_typeProperties_functionAppUrl')]",
-					"functionKey": {
-						"type": "SecureString",
-						"value": "[parameters('ScrapperCalendarioIBRE_functionKey')]"
-					},
-					"authentication": "Anonymous"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ScrapperIgpmIBRE')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureFunction",
-				"typeProperties": {
-					"functionAppUrl": "[parameters('ScrapperIgpmIBRE_properties_typeProperties_functionAppUrl')]",
-					"functionKey": {
-						"type": "SecureString",
-						"value": "[parameters('ScrapperIgpmIBRE_functionKey')]"
-					},
-					"authentication": "Anonymous"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ScrapperInccmIBRE')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureFunction",
-				"typeProperties": {
-					"functionAppUrl": "[parameters('ScrapperInccmIBRE_properties_typeProperties_functionAppUrl')]",
-					"functionKey": {
-						"type": "SecureString",
-						"value": "[parameters('ScrapperInccmIBRE_functionKey')]"
-					},
-					"authentication": "Anonymous"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/geraSeriesMoedasBacen')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureFunction",
-				"typeProperties": {
-					"functionAppUrl": "[parameters('geraSeriesMoedasBacen_properties_typeProperties_functionAppUrl')]",
-					"functionKey": {
-						"type": "SecureString",
-						"value": "[parameters('geraSeriesMoedasBacen_functionKey')]"
-					},
-					"authentication": "Anonymous"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/procedure')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"parameters": {
-					"IDSerie": {
-						"type": "int"
-					},
-					"Data": {
-						"type": "string"
-					},
-					"Valor": {
-						"type": "int"
-					}
-				},
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"connectionString": "[parameters('procedure_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/rcPhoenixSAD410_ADF_Teste')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"connectionString": "[parameters('rcPhoenixSAD410_ADF_Teste_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
 		{
 			"name": "[concat(parameters('factoryName'), '/FluxoTimedOut_TESTE')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
@@ -288,6 +190,317 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DebAnbima')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('DebAnbima_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ExportadorSeriesXML')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureFunction",
+				"typeProperties": {
+					"functionAppUrl": "[parameters('ExportadorSeriesXML_properties_typeProperties_functionAppUrl')]",
+					"functionKey": {
+						"type": "SecureString",
+						"value": "[parameters('ExportadorSeriesXML_functionKey')]"
+					},
+					"authentication": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/MoedasBacen')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('MoedasBacen_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ScrapperCalendarioIBRE')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureFunction",
+				"typeProperties": {
+					"functionAppUrl": "[parameters('ScrapperCalendarioIBRE_properties_typeProperties_functionAppUrl')]",
+					"functionKey": {
+						"type": "SecureString",
+						"value": "[parameters('ScrapperCalendarioIBRE_functionKey')]"
+					},
+					"authentication": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ScrapperIgpmIBRE')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureFunction",
+				"typeProperties": {
+					"functionAppUrl": "[parameters('ScrapperIgpmIBRE_properties_typeProperties_functionAppUrl')]",
+					"functionKey": {
+						"type": "SecureString",
+						"value": "[parameters('ScrapperIgpmIBRE_functionKey')]"
+					},
+					"authentication": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ScrapperInccmIBRE')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureFunction",
+				"typeProperties": {
+					"functionAppUrl": "[parameters('ScrapperInccmIBRE_properties_typeProperties_functionAppUrl')]",
+					"functionKey": {
+						"type": "SecureString",
+						"value": "[parameters('ScrapperInccmIBRE_functionKey')]"
+					},
+					"authentication": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/curvasSwap')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureFunction",
+				"typeProperties": {
+					"functionAppUrl": "[parameters('curvasSwap_properties_typeProperties_functionAppUrl')]",
+					"functionKey": {
+						"type": "SecureString",
+						"value": "[parameters('curvasSwap_functionKey')]"
+					},
+					"authentication": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/geraSeriesMoedasBacen')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureFunction",
+				"typeProperties": {
+					"functionAppUrl": "[parameters('geraSeriesMoedasBacen_properties_typeProperties_functionAppUrl')]",
+					"functionKey": {
+						"type": "SecureString",
+						"value": "[parameters('geraSeriesMoedasBacen_functionKey')]"
+					},
+					"authentication": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/rcPhoenixSAD410_ADF_Teste')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('rcPhoenixSAD410_ADF_Teste_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline2')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "ForEach1",
+						"type": "ForEach",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@variables('lista')",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "azurefunction",
+									"type": "Fail",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"message": {
+											"value": "@item()",
+											"type": "Expression"
+										},
+										"errorCode": "dasda"
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"variables": {
+					"lista": {
+						"type": "Array",
+						"defaultValue": [
+							"incc_v1",
+							"igpm_v1",
+							"igpdi_v1"
+						]
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Bvbgs')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('Bvbgs_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CRVBRABMF_RATE_SWAP_DI1_DOL')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Azure Function1",
+						"type": "AzureFunctionActivity",
+						"dependsOn": [
+							{
+								"activity": "Set variable2",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"functionName": "GeradorSwaps",
+							"method": "POST",
+							"headers": {},
+							"body": {
+								"value": "{\"curva\":\"@{variables('curva')}\",\"dia\":\"@{variables('dia')}\"}",
+								"type": "Expression"
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "curvasSwap",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "Set variable2",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "dia",
+							"value": {
+								"value": "@if(lessOrEquals(int(formatDateTime(utcnow(), 'hh')),6),formatDateTime(adddays(utcnow(),-1),'yyyy-MM-dd'),formatDateTime(utcnow(), 'yyyy-MM-dd'))",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"variables": {
+					"curva": {
+						"type": "String",
+						"defaultValue": "CRVBRABMF_RATE_SWAP_DI1_DOL"
+					},
+					"dia": {
+						"type": "String",
+						"defaultValue": "2022-03-11"
+					}
+				},
+				"folder": {
+					"name": "B3-Web/CurvasSwap"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/curvasSwap')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DebAnbima')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "DebAnbima",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "debêntures Anbima teste.txt",
+						"container": "anbima"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/DebAnbima')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Descritor_series_moedas_bacen')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -396,6 +609,65 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/MoedasBacen_copy1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "DebAnbima",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"a": {
+						"type": "string",
+						"defaultValue": "a"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "20220218.csv",
+						"container": "testebacen"
+					},
+					"columnDelimiter": ";",
+					"escapeChar": "\\",
+					"firstRowAsHeader": false,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/DebAnbima')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/rcPhoenixSAD410_ADF_Teste')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -414,1539 +686,58 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/AtualizaINCCM')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
+			"name": "[concat(parameters('factoryName'), '/bvbg086')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"activities": [
-					{
-						"name": "GetCotacaoAtualizada",
-						"type": "Lookup",
-						"dependsOn": [
-							{
-								"activity": "GetDivulgacaoAtualizada",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderStoredProcedureName": "[[db_datareader].[getUltimaCotacaoSerie]",
-								"storedProcedureParameters": {
-									"IDSerie": {
-										"type": "String",
-										"value": {
-											"value": "@variables('IDSerie_indice')",
-											"type": "Expression"
-										}
-									}
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "rcPhoenixSAD410_ADF_Teste",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						}
-					},
-					{
-						"name": "ScrapperCalendario",
-						"type": "AzureFunctionActivity",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"functionName": "ScrapperCalendarioDivulgacao",
-							"method": "POST",
-							"headers": {},
-							"body": {
-								"indice": "@{variables('indice')}"
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "ScrapperCalendarioIBRE",
-							"type": "LinkedServiceReference"
-						}
-					},
-					{
-						"name": "AtualizaBancodeDados",
-						"description": "Atualiza a table do calendário de divulgação do índice no banco, se possível.",
-						"type": "IfCondition",
-						"dependsOn": [
-							{
-								"activity": "ScrapperCalendario",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"expression": {
-								"value": "@equals(activity('ScrapperCalendario').output.inserir_no_banco,true)",
-								"type": "Expression"
-							},
-							"ifTrueActivities": [
-								{
-									"name": "AtualizaCalendarioBanco",
-									"type": "SqlServerStoredProcedure",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "7.00:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"storedProcedureName": "[[db_datareader].[testeInsereDataDivulgacaoIbre]",
-										"storedProcedureParameters": {
-											"Data": {
-												"value": {
-													"value": "@formatDateTime(utcnow(), 'yyyy-MM-dd')",
-													"type": "Expression"
-												},
-												"type": "String"
-											},
-											"DataDivulgacao": {
-												"value": {
-													"value": "@activity('ScrapperCalendario').output.dia",
-													"type": "Expression"
-												},
-												"type": "String"
-											},
-											"Indice": {
-												"value": {
-													"value": "@variables('indice')",
-													"type": "Expression"
-												},
-												"type": "String"
-											}
-										}
-									},
-									"linkedServiceName": {
-										"referenceName": "rcPhoenixSAD410_ADF_Teste",
-										"type": "LinkedServiceReference"
-									}
-								}
-							]
-						}
-					},
-					{
-						"name": "GetDivulgacaoAtualizada",
-						"type": "Lookup",
-						"dependsOn": [
-							{
-								"activity": "AtualizaBancodeDados",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderStoredProcedureName": "[[db_datareader].[GetCalendarioDivulgacaoIbreAtualizado]",
-								"storedProcedureParameters": {
-									"Indice": {
-										"type": "String",
-										"value": {
-											"value": "@variables('indice')",
-											"type": "Expression"
-										}
-									}
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "rcPhoenixSAD410_ADF_Teste",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						}
-					},
-					{
-						"name": "DiadeDivulgacao",
-						"description": "Verifica se a última cotação salva foi divulgada após a data da última divulgação.",
-						"type": "IfCondition",
-						"dependsOn": [
-							{
-								"activity": "MesDivulgacaoAtual",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"expression": {
-								"value": "@equals(activity('GetDivulgacaoAtualizada').output.firstRow.DataDivulgacao,\nformatDateTime(utcnow(), 'yyyy-MM-dd'))",
-								"type": "Expression"
-							},
-							"ifFalseActivities": [
-								{
-									"name": "InsereIndiceBanco1",
-									"type": "SqlServerStoredProcedure",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "7.00:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"storedProcedureName": "[[db_datareader].[InsereCotacaoSerieHistorica]",
-										"storedProcedureParameters": {
-											"Data": {
-												"value": {
-													"value": "@subtractFromTime(formatDateTime(utcnow(), 'yyyy-MM-dd'),1,'Day')",
-													"type": "Expression"
-												},
-												"type": "String"
-											},
-											"IDSerie": {
-												"value": {
-													"value": "@variables('IDSerie_indice')",
-													"type": "Expression"
-												},
-												"type": "Int32"
-											},
-											"Valor": {
-												"value": {
-													"value": "@activity('GetCotacaoAtualizada').output.firstRow.Valor",
-													"type": "Expression"
-												},
-												"type": "Double"
-											}
-										}
-									},
-									"linkedServiceName": {
-										"referenceName": "rcPhoenixSAD410_ADF_Teste",
-										"type": "LinkedServiceReference"
-									}
-								},
-								{
-									"name": "EncerraPipeline",
-									"description": "Não é um erro, apenas encerra o pipeline",
-									"type": "Fail",
-									"dependsOn": [
-										{
-											"activity": "InsereIndiceBanco1",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"userProperties": [],
-									"typeProperties": {
-										"message": "FailMessage",
-										"errorCode": "ErrorCode"
-									}
-								}
-							]
-						}
-					},
-					{
-						"name": "CapturaNovoValor",
-						"type": "Until",
-						"dependsOn": [
-							{
-								"activity": "DiadeDivulgacao",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"expression": {
-								"value": "@variables('NovoIndice')",
-								"type": "Expression"
-							},
-							"activities": [
-								{
-									"name": "ScrapperInccmIBRE",
-									"type": "AzureFunctionActivity",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "7.00:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"functionName": "ScrapperInccmIBRE",
-										"method": "GET",
-										"headers": {}
-									},
-									"linkedServiceName": {
-										"referenceName": "ScrapperInccmIBRE",
-										"type": "LinkedServiceReference"
-									}
-								},
-								{
-									"name": "IndiceAtualizou",
-									"type": "IfCondition",
-									"dependsOn": [
-										{
-											"activity": "ScrapperInccmIBRE",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"userProperties": [],
-									"typeProperties": {
-										"expression": {
-											"value": "@not(equals(float(activity('ScrapperInccmIBRE').output.valor),\n float(activity('GetCotacaoAtualizada').output.firstRow.Valor)))",
-											"type": "Expression"
-										},
-										"ifFalseActivities": [
-											{
-												"name": "Wait1",
-												"type": "Wait",
-												"dependsOn": [],
-												"userProperties": [],
-												"typeProperties": {
-													"waitTimeInSeconds": 10
-												}
-											}
-										],
-										"ifTrueActivities": [
-											{
-												"name": "Stored procedure1",
-												"type": "SqlServerStoredProcedure",
-												"dependsOn": [],
-												"policy": {
-													"timeout": "7.00:00:00",
-													"retry": 0,
-													"retryIntervalInSeconds": 30,
-													"secureOutput": false,
-													"secureInput": false
-												},
-												"userProperties": [],
-												"typeProperties": {
-													"storedProcedureName": "[[db_datareader].[InsereCotacaoSerieHistorica]",
-													"storedProcedureParameters": {
-														"Data": {
-															"value": "@formatDateTime(utcnow(), 'yyyy-MM-dd')",
-															"type": "String"
-														},
-														"IDSerie": {
-															"value": {
-																"value": "@variables('IDSerie_indice')",
-																"type": "Expression"
-															},
-															"type": "Int32"
-														},
-														"Valor": {
-															"value": "@activity('ScrapperInccmIBRE').output.valor",
-															"type": "Double"
-														}
-													}
-												},
-												"linkedServiceName": {
-													"referenceName": "rcPhoenixSAD410_ADF_Teste",
-													"type": "LinkedServiceReference"
-												}
-											},
-											{
-												"name": "Set variable1",
-												"type": "SetVariable",
-												"dependsOn": [
-													{
-														"activity": "Stored procedure1",
-														"dependencyConditions": [
-															"Succeeded"
-														]
-													}
-												],
-												"userProperties": [],
-												"typeProperties": {
-													"variableName": "NovoIndice",
-													"value": true
-												}
-											}
-										]
-									}
-								}
-							],
-							"timeout": "0.00:10:00"
-						}
-					},
-					{
-						"name": "SendEmail",
-						"type": "Wait",
-						"dependsOn": [
-							{
-								"activity": "CapturaNovoValor",
-								"dependencyConditions": [
-									"Failed"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"waitTimeInSeconds": 1
-						}
-					},
-					{
-						"name": "MesDivulgacaoAtual",
-						"description": "Verifica se o mês atual possui data de divulgação para o índice em questão.",
-						"type": "IfCondition",
-						"dependsOn": [
-							{
-								"activity": "GetCotacaoAtualizada",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"expression": {
-								"value": "@equals(formatDateTime(utcnow(), 'MM'),\nsubstring(activity('GetDivulgacaoAtualizada').output.firstRow.DataDivulgacao,5,2))",
-								"type": "Expression"
-							},
-							"ifFalseActivities": [
-								{
-									"name": "SendEmail1",
-									"type": "Fail",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"message": "Data de divulgação não corresponde ao atual",
-										"errorCode": "Disparar email"
-									}
-								}
-							]
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
+				"linkedServiceName": {
+					"referenceName": "Bvbgs",
+					"type": "LinkedServiceReference"
 				},
-				"variables": {
-					"indice": {
-						"type": "String",
-						"defaultValue": "INCCM"
-					},
-					"IDSerie_indice": {
-						"type": "String",
-						"defaultValue": "580040"
-					},
-					"NovoIndice": {
-						"type": "Boolean",
-						"defaultValue": false
-					}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/rcPhoenixSAD410_ADF_Teste')]",
-				"[concat(variables('factoryId'), '/linkedServices/ScrapperCalendarioIBRE')]",
-				"[concat(variables('factoryId'), '/linkedServices/rcPhoenixSAD410_ADF_Teste')]",
-				"[concat(variables('factoryId'), '/linkedServices/ScrapperInccmIBRE')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/TesteMoedasBacen')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "MoedasBacenCSV",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": false,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"dataset": {
-								"referenceName": "MoedasBacen",
-								"type": "DatasetReference",
-								"parameters": {
-									"a": "a"
-								}
-							},
-							"firstRowOnly": false
-						}
-					},
-					{
-						"name": "geraSeries",
-						"type": "AzureFunctionActivity",
-						"dependsOn": [
-							{
-								"activity": "MoedasBacenCSV",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"functionName": "GeraSeriesMoedasBacen ",
-							"method": "POST",
-							"headers": {},
-							"body": {
-								"valores_moedas": "@string(activity('MoedasBacenCSV').output.value)"
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "geraSeriesMoedasBacen",
-							"type": "LinkedServiceReference"
-						}
-					},
-					{
-						"name": "ForEach1",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "geraSeries",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('geraSeries').output.valores",
-								"type": "Expression"
-							},
-							"isSequential": true,
-							"activities": [
-								{
-									"name": "Stored procedure1",
-									"type": "SqlServerStoredProcedure",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "7.00:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"storedProcedureName": "[[db_datareader].[InsereCotacaoSerieHistorica]",
-										"storedProcedureParameters": {
-											"Data": {
-												"value": {
-													"value": "@formatDateTime(utcnow(), 'yyyy-MM-dd')",
-													"type": "Expression"
-												},
-												"type": "String"
-											},
-											"IDSerie": {
-												"value": {
-													"value": "@json(item()).IDSerie",
-													"type": "Expression"
-												},
-												"type": "Int32"
-											},
-											"Valor": {
-												"value": {
-													"value": "@json(item()).Value",
-													"type": "Expression"
-												},
-												"type": "Double"
-											}
-										}
-									},
-									"linkedServiceName": {
-										"referenceName": "rcPhoenixSAD410_ADF_Teste",
-										"type": "LinkedServiceReference"
-									}
-								}
-							]
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"variables": {
-					"AA": {
-						"type": "Array"
-					}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/MoedasBacen')]",
-				"[concat(variables('factoryId'), '/linkedServices/geraSeriesMoedasBacen')]",
-				"[concat(variables('factoryId'), '/linkedServices/rcPhoenixSAD410_ADF_Teste')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AtualizaIGPM')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "GetCotacaoAtualizada",
-						"type": "Lookup",
-						"dependsOn": [
-							{
-								"activity": "DiadeDivulgacao",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderStoredProcedureName": "[[db_datareader].[getUltimaCotacaoSerie]",
-								"storedProcedureParameters": {
-									"IDSerie": {
-										"type": "String",
-										"value": {
-											"value": "@variables('IDSerie_indice')",
-											"type": "Expression"
-										}
-									}
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "rcPhoenixSAD410_ADF_Teste",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						}
-					},
-					{
-						"name": "ScrapperCalendario",
-						"type": "AzureFunctionActivity",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"functionName": "ScrapperCalendarioDivulgacao",
-							"method": "POST",
-							"headers": {},
-							"body": {
-								"indice": "@{variables('indice')}"
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "ScrapperCalendarioIBRE",
-							"type": "LinkedServiceReference"
-						}
-					},
-					{
-						"name": "AtualizaBancodeDados",
-						"type": "IfCondition",
-						"dependsOn": [
-							{
-								"activity": "ScrapperCalendario",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"expression": {
-								"value": "@equals(activity('ScrapperCalendario').output.inserir_no_banco,true)",
-								"type": "Expression"
-							},
-							"ifTrueActivities": [
-								{
-									"name": "AtualizaCalendarioBanco",
-									"type": "SqlServerStoredProcedure",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "7.00:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"storedProcedureName": "[[db_datareader].[testeInsereDataDivulgacaoIbre]",
-										"storedProcedureParameters": {
-											"Data": {
-												"value": {
-													"value": "@formatDateTime(utcnow(), 'yyyy-MM-dd')",
-													"type": "Expression"
-												},
-												"type": "String"
-											},
-											"DataDivulgacao": {
-												"value": {
-													"value": "@activity('ScrapperCalendario').output.dia",
-													"type": "Expression"
-												},
-												"type": "String"
-											},
-											"Indice": {
-												"value": {
-													"value": "@variables('indice')",
-													"type": "Expression"
-												},
-												"type": "String"
-											}
-										}
-									},
-									"linkedServiceName": {
-										"referenceName": "rcPhoenixSAD410_ADF_Teste",
-										"type": "LinkedServiceReference"
-									}
-								}
-							]
-						}
-					},
-					{
-						"name": "GetDivulgacaoAtualizada",
-						"type": "Lookup",
-						"dependsOn": [
-							{
-								"activity": "AtualizaBancodeDados",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderStoredProcedureName": "[[db_datareader].[GetCalendarioDivulgacaoIbreAtualizado]",
-								"storedProcedureParameters": {
-									"Indice": {
-										"type": "String",
-										"value": {
-											"value": "@variables('indice')",
-											"type": "Expression"
-										}
-									}
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "rcPhoenixSAD410_ADF_Teste",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						}
-					},
-					{
-						"name": "DiadeDivulgacao",
-						"description": "Verifica se hoje é dia de divulgação.",
-						"type": "IfCondition",
-						"dependsOn": [
-							{
-								"activity": "MesDivulgacaoAtual",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"expression": {
-								"value": "@equals(activity('GetDivulgacaoAtualizada').output.firstRow.DataDivulgacao,\nformatDateTime(utcnow(), 'yyyy-MM-dd'))",
-								"type": "Expression"
-							},
-							"ifFalseActivities": [
-								{
-									"name": "EncerraPipeline",
-									"type": "Fail",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"message": {
-											"value": "@activity('GetDivulgacaoAtualizada').output",
-											"type": "Expression"
-										},
-										"errorCode": "Não é necessário fazer mais nada"
-									}
-								}
-							]
-						}
-					},
-					{
-						"name": "MesDivulgacaoAtual",
-						"description": "Verifica se o mês atual possui data de divulgação para o índice em questão.",
-						"type": "IfCondition",
-						"dependsOn": [
-							{
-								"activity": "GetDivulgacaoAtualizada",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"expression": {
-								"value": "@equals(formatDateTime(utcnow(), 'MM'),\nsubstring(activity('GetDivulgacaoAtualizada').output.firstRow.DataDivulgacao,5,2))",
-								"type": "Expression"
-							},
-							"ifFalseActivities": [
-								{
-									"name": "Fail1",
-									"type": "Fail",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"message": "Data de divulgação não corresponde ao atual",
-										"errorCode": "Disparar email"
-									}
-								}
-							]
-						}
-					},
-					{
-						"name": "CapturaNovoValor",
-						"type": "Until",
-						"dependsOn": [
-							{
-								"activity": "GetCotacaoAtualizada",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"expression": {
-								"value": "@variables('NovoIndice')",
-								"type": "Expression"
-							},
-							"activities": [
-								{
-									"name": "ScrapperIgpIBRE",
-									"type": "AzureFunctionActivity",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "7.00:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"functionName": "ScrapperIgpIBRE",
-										"method": "POST",
-										"headers": {},
-										"body": {
-											"indice": "@{variables('indice')}"
-										}
-									},
-									"linkedServiceName": {
-										"referenceName": "ScrapperIgpmIBRE",
-										"type": "LinkedServiceReference"
-									}
-								},
-								{
-									"name": "If Condition1",
-									"type": "IfCondition",
-									"dependsOn": [
-										{
-											"activity": "ScrapperIgpIBRE",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"userProperties": [],
-									"typeProperties": {
-										"expression": {
-											"value": "@not(equals(float(activity('ScrapperIgpIBRE').output.valor),\n float(activity('GetCotacaoAtualizada').output.firstRow.Valor)))",
-											"type": "Expression"
-										},
-										"ifFalseActivities": [
-											{
-												"name": "Wait1",
-												"type": "Wait",
-												"dependsOn": [],
-												"userProperties": [],
-												"typeProperties": {
-													"waitTimeInSeconds": 10
-												}
-											}
-										],
-										"ifTrueActivities": [
-											{
-												"name": "Stored procedure1",
-												"type": "SqlServerStoredProcedure",
-												"dependsOn": [],
-												"policy": {
-													"timeout": "7.00:00:00",
-													"retry": 0,
-													"retryIntervalInSeconds": 30,
-													"secureOutput": false,
-													"secureInput": false
-												},
-												"userProperties": [],
-												"typeProperties": {
-													"storedProcedureName": "[[db_datareader].[InsereCotacaoSerieHistorica]",
-													"storedProcedureParameters": {
-														"Data": {
-															"value": {
-																"value": "@formatDateTime(utcnow(), 'yyyy-MM-dd')",
-																"type": "Expression"
-															},
-															"type": "String"
-														},
-														"IDSerie": {
-															"value": {
-																"value": "@variables('IDSerie_indice')",
-																"type": "Expression"
-															},
-															"type": "Int32"
-														},
-														"Valor": {
-															"value": {
-																"value": "@activity('ScrapperIgpIBRE').output.valor",
-																"type": "Expression"
-															},
-															"type": "Double"
-														}
-													}
-												},
-												"linkedServiceName": {
-													"referenceName": "rcPhoenixSAD410_ADF_Teste",
-													"type": "LinkedServiceReference"
-												}
-											},
-											{
-												"name": "Set variable1",
-												"type": "SetVariable",
-												"dependsOn": [
-													{
-														"activity": "Stored procedure1",
-														"dependencyConditions": [
-															"Succeeded"
-														]
-													}
-												],
-												"userProperties": [],
-												"typeProperties": {
-													"variableName": "NovoIndice",
-													"value": true
-												}
-											}
-										]
-									}
-								}
-							],
-							"timeout": "00:04:00"
-						}
-					},
-					{
-						"name": "SendEmail",
-						"type": "Wait",
-						"dependsOn": [
-							{
-								"activity": "CapturaNovoValor",
-								"dependencyConditions": [
-									"Failed"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"waitTimeInSeconds": 1
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"variables": {
-					"indice": {
-						"type": "String",
-						"defaultValue": "IGPM"
-					},
-					"IDSerie_indice": {
-						"type": "String",
-						"defaultValue": "30990"
-					},
-					"NovoIndice": {
-						"type": "Boolean",
-						"defaultValue": false
-					}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/rcPhoenixSAD410_ADF_Teste')]",
-				"[concat(variables('factoryId'), '/linkedServices/ScrapperCalendarioIBRE')]",
-				"[concat(variables('factoryId'), '/linkedServices/rcPhoenixSAD410_ADF_Teste')]",
-				"[concat(variables('factoryId'), '/linkedServices/ScrapperIgpmIBRE')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AtualizaIGPDI')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "GetCotacaoAtualizada",
-						"type": "Lookup",
-						"dependsOn": [
-							{
-								"activity": "DiadeDivulgacao",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderStoredProcedureName": "[[db_datareader].[getUltimaCotacaoSerie]",
-								"storedProcedureParameters": {
-									"IDSerie": {
-										"type": "String",
-										"value": {
-											"value": "@variables('IDSerie_indice')",
-											"type": "Expression"
-										}
-									}
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "rcPhoenixSAD410_ADF_Teste",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						}
-					},
-					{
-						"name": "ScrapperCalendario",
-						"type": "AzureFunctionActivity",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"functionName": "ScrapperCalendarioDivulgacao",
-							"method": "POST",
-							"headers": {},
-							"body": {
-								"indice": "@{variables('indice')}"
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "ScrapperCalendarioIBRE",
-							"type": "LinkedServiceReference"
-						}
-					},
-					{
-						"name": "AtualizaBancodeDados",
-						"type": "IfCondition",
-						"dependsOn": [
-							{
-								"activity": "ScrapperCalendario",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"expression": {
-								"value": "@equals(activity('ScrapperCalendario').output.inserir_no_banco,true)",
-								"type": "Expression"
-							},
-							"ifTrueActivities": [
-								{
-									"name": "AtualizaCalendarioBanco",
-									"type": "SqlServerStoredProcedure",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "7.00:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"storedProcedureName": "[[db_datareader].[testeInsereDataDivulgacaoIbre]",
-										"storedProcedureParameters": {
-											"Data": {
-												"value": {
-													"value": "@formatDateTime(utcnow(), 'yyyy-MM-dd')",
-													"type": "Expression"
-												},
-												"type": "String"
-											},
-											"DataDivulgacao": {
-												"value": {
-													"value": "@activity('ScrapperCalendario').output.dia",
-													"type": "Expression"
-												},
-												"type": "String"
-											},
-											"Indice": {
-												"value": {
-													"value": "@variables('indice')",
-													"type": "Expression"
-												},
-												"type": "String"
-											}
-										}
-									},
-									"linkedServiceName": {
-										"referenceName": "rcPhoenixSAD410_ADF_Teste",
-										"type": "LinkedServiceReference"
-									}
-								}
-							]
-						}
-					},
-					{
-						"name": "GetDivulgacaoAtualizada",
-						"type": "Lookup",
-						"dependsOn": [
-							{
-								"activity": "AtualizaBancodeDados",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderStoredProcedureName": "[[db_datareader].[GetCalendarioDivulgacaoIbreAtualizado]",
-								"storedProcedureParameters": {
-									"Indice": {
-										"type": "String",
-										"value": {
-											"value": "@variables('indice')",
-											"type": "Expression"
-										}
-									}
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "rcPhoenixSAD410_ADF_Teste",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						}
-					},
-					{
-						"name": "DiadeDivulgacao",
-						"description": "Verifica se hoje é dia de divulgação.",
-						"type": "IfCondition",
-						"dependsOn": [
-							{
-								"activity": "MesDivulgacaoAtual",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"expression": {
-								"value": "@equals(activity('GetDivulgacaoAtualizada').output.firstRow.DataDivulgacao,\nformatDateTime(utcnow(), 'yyyy-MM-dd'))",
-								"type": "Expression"
-							},
-							"ifFalseActivities": [
-								{
-									"name": "EncerraPipeline",
-									"type": "Fail",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"message": {
-											"value": "@activity('GetDivulgacaoAtualizada').output",
-											"type": "Expression"
-										},
-										"errorCode": "Não é necessário fazer mais nada"
-									}
-								}
-							]
-						}
-					},
-					{
-						"name": "MesDivulgacaoAtual",
-						"description": "Verifica se o mês atual possui data de divulgação para o índice em questão.",
-						"type": "IfCondition",
-						"dependsOn": [
-							{
-								"activity": "GetDivulgacaoAtualizada",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"expression": {
-								"value": "@equals(formatDateTime(utcnow(), 'MM'),\nsubstring(activity('GetDivulgacaoAtualizada').output.firstRow.DataDivulgacao,5,2))",
-								"type": "Expression"
-							},
-							"ifFalseActivities": [
-								{
-									"name": "Fail1",
-									"type": "Fail",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"message": "Data de divulgação não corresponde ao atual",
-										"errorCode": "Disparar email"
-									}
-								}
-							]
-						}
-					},
-					{
-						"name": "CapturaNovoValor",
-						"type": "Until",
-						"dependsOn": [
-							{
-								"activity": "GetCotacaoAtualizada",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"expression": {
-								"value": "@variables('NovoIndice')",
-								"type": "Expression"
-							},
-							"activities": [
-								{
-									"name": "ScrapperIgpIBRE",
-									"type": "AzureFunctionActivity",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "7.00:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"functionName": "ScrapperIgpIBRE",
-										"method": "POST",
-										"headers": {},
-										"body": {
-											"indice": "@{variables('indice')}"
-										}
-									},
-									"linkedServiceName": {
-										"referenceName": "ScrapperIgpmIBRE",
-										"type": "LinkedServiceReference"
-									}
-								},
-								{
-									"name": "If Condition1",
-									"type": "IfCondition",
-									"dependsOn": [
-										{
-											"activity": "ScrapperIgpIBRE",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"userProperties": [],
-									"typeProperties": {
-										"expression": {
-											"value": "@not(equals(float(activity('ScrapperIgpIBRE').output.valor),\n float(activity('GetCotacaoAtualizada').output.firstRow.Valor)))",
-											"type": "Expression"
-										},
-										"ifFalseActivities": [
-											{
-												"name": "Wait1",
-												"type": "Wait",
-												"dependsOn": [],
-												"userProperties": [],
-												"typeProperties": {
-													"waitTimeInSeconds": 10
-												}
-											}
-										],
-										"ifTrueActivities": [
-											{
-												"name": "Stored procedure1",
-												"type": "SqlServerStoredProcedure",
-												"dependsOn": [],
-												"policy": {
-													"timeout": "7.00:00:00",
-													"retry": 0,
-													"retryIntervalInSeconds": 30,
-													"secureOutput": false,
-													"secureInput": false
-												},
-												"userProperties": [],
-												"typeProperties": {
-													"storedProcedureName": "[[db_datareader].[InsereCotacaoSerieHistorica]",
-													"storedProcedureParameters": {
-														"Data": {
-															"value": {
-																"value": "@formatDateTime(utcnow(), 'yyyy-MM-dd')",
-																"type": "Expression"
-															},
-															"type": "String"
-														},
-														"IDSerie": {
-															"value": {
-																"value": "@variables('IDSerie_indice')",
-																"type": "Expression"
-															},
-															"type": "Int32"
-														},
-														"Valor": {
-															"value": {
-																"value": "@activity('ScrapperIgpIBRE').output.valor",
-																"type": "Expression"
-															},
-															"type": "Double"
-														}
-													}
-												},
-												"linkedServiceName": {
-													"referenceName": "rcPhoenixSAD410_ADF_Teste",
-													"type": "LinkedServiceReference"
-												}
-											},
-											{
-												"name": "Set variable1",
-												"type": "SetVariable",
-												"dependsOn": [
-													{
-														"activity": "Stored procedure1",
-														"dependencyConditions": [
-															"Succeeded"
-														]
-													}
-												],
-												"userProperties": [],
-												"typeProperties": {
-													"variableName": "NovoIndice",
-													"value": true
-												}
-											}
-										]
-									}
-								}
-							],
-							"timeout": "00:04:00"
-						}
-					},
-					{
-						"name": "SendEmail",
-						"type": "Wait",
-						"dependsOn": [
-							{
-								"activity": "CapturaNovoValor",
-								"dependencyConditions": [
-									"Failed"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"waitTimeInSeconds": 1
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"variables": {
-					"indice": {
-						"type": "String",
-						"defaultValue": "IGPDI"
-					},
-					"IDSerie_indice": {
-						"type": "String",
-						"defaultValue": "30988"
-					},
-					"NovoIndice": {
-						"type": "Boolean",
-						"defaultValue": false
-					}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/rcPhoenixSAD410_ADF_Teste')]",
-				"[concat(variables('factoryId'), '/linkedServices/ScrapperCalendarioIBRE')]",
-				"[concat(variables('factoryId'), '/linkedServices/rcPhoenixSAD410_ADF_Teste')]",
-				"[concat(variables('factoryId'), '/linkedServices/ScrapperIgpmIBRE')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/TriggerDiario8h')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
 				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "AtualizaINCCM",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					},
-					{
-						"pipelineReference": {
-							"referenceName": "AtualizaIGPDI",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					},
-					{
-						"pipelineReference": {
-							"referenceName": "AtualizaIGPM",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "ScheduleTrigger",
+				"type": "Xml",
 				"typeProperties": {
-					"recurrence": {
-						"frequency": "Day",
-						"interval": 1,
-						"startTime": "2022-02-14T13:23:00",
-						"timeZone": "Bahia Standard Time",
-						"schedule": {
-							"minutes": [
-								0
-							],
-							"hours": [
-								8
-							]
-						}
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "BVBG.086.01_BV000328202201210328000002042077920.xml",
+						"container": "bvbg086"
 					}
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/AtualizaINCCM')]",
-				"[concat(variables('factoryId'), '/pipelines/AtualizaIGPDI')]",
-				"[concat(variables('factoryId'), '/pipelines/AtualizaIGPM')]"
+				"[concat(variables('factoryId'), '/linkedServices/Bvbgs')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/blobtrigger')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "pipeline2",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/bacen/blobs/Curvas/moedasBacen/v1/",
+					"blobPathEndsWith": "_Curvas_moedasBacen_v1.xml",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('blobtrigger_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated",
+						"Microsoft.Storage.BlobDeleted"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/pipeline2')]"
 			]
 		}
 	]

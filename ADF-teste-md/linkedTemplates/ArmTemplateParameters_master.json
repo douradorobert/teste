@@ -5,6 +5,12 @@
 		"factoryName": {
 			"value": "ADF-teste-md"
 		},
+		"DebAnbima_connectionString": {
+			"value": ""
+		},
+		"ExportadorSeriesXML_functionKey": {
+			"value": ""
+		},
 		"MoedasBacen_connectionString": {
 			"value": ""
 		},
@@ -17,14 +23,20 @@
 		"ScrapperInccmIBRE_functionKey": {
 			"value": ""
 		},
-		"geraSeriesMoedasBacen_functionKey": {
+		"curvasSwap_functionKey": {
 			"value": ""
 		},
-		"procedure_connectionString": {
+		"geraSeriesMoedasBacen_functionKey": {
 			"value": ""
 		},
 		"rcPhoenixSAD410_ADF_Teste_connectionString": {
 			"value": ""
+		},
+		"Bvbgs_connectionString": {
+			"value": ""
+		},
+		"ExportadorSeriesXML_properties_typeProperties_functionAppUrl": {
+			"value": "https://exportadorxml.azurewebsites.net"
 		},
 		"ScrapperCalendarioIBRE_properties_typeProperties_functionAppUrl": {
 			"value": "https://scrapperfgvibre.azurewebsites.net"
@@ -35,8 +47,14 @@
 		"ScrapperInccmIBRE_properties_typeProperties_functionAppUrl": {
 			"value": "https://scrapperfgvibre.azurewebsites.net"
 		},
+		"curvasSwap_properties_typeProperties_functionAppUrl": {
+			"value": "https://curvasb3-web.azurewebsites.net"
+		},
 		"geraSeriesMoedasBacen_properties_typeProperties_functionAppUrl": {
 			"value": "https://seriesmoedasbacen.azurewebsites.net"
+		},
+		"blobtrigger_properties_typeProperties_scope": {
+			"value": "/subscriptions/b9e0da61-71e8-4197-bd02-960f99d61822/resourceGroups/GrupoRecursosADFTeste/providers/Microsoft.Storage/storageAccounts/datalakebobby"
 		},
 		"containerUri": {
 			"value": ""
