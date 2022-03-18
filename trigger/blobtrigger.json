@@ -1,0 +1,25 @@
+{
+	"name": "blobtrigger",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "pipeline2",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "BlobEventsTrigger",
+		"typeProperties": {
+			"blobPathBeginsWith": "/bacen/blobs/Curvas/moedasBacen/v1/",
+			"blobPathEndsWith": "_Curvas_moedasBacen_v1.xml",
+			"ignoreEmptyBlobs": true,
+			"scope": "/subscriptions/b9e0da61-71e8-4197-bd02-960f99d61822/resourceGroups/GrupoRecursosADFTeste/providers/Microsoft.Storage/storageAccounts/datalakebobby",
+			"events": [
+				"Microsoft.Storage.BlobCreated"
+			]
+		}
+	}
+}

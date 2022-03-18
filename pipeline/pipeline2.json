@@ -1,0 +1,77 @@
+{
+	"name": "pipeline2",
+	"properties": {
+		"activities": [
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@variables('lista')",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "azurefunction",
+							"type": "Fail",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"message": {
+									"value": "@item()",
+									"type": "Expression"
+								},
+								"errorCode": "dasda"
+							}
+						},
+						{
+							"name": "send msg",
+							"type": "Wait",
+							"dependsOn": [
+								{
+									"activity": "azurefunction",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"waitTimeInSeconds": 1
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "Script1",
+				"type": "Script",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"scripts": []
+				}
+			}
+		],
+		"variables": {
+			"lista": {
+				"type": "Array",
+				"defaultValue": [
+					"incc_v1",
+					"igpm_v1",
+					"igpdi_v1"
+				]
+			}
+		},
+		"annotations": []
+	}
+}
